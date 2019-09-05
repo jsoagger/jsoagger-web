@@ -1,0 +1,6 @@
+{
+  "name": "AdminDefaultLayout",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./AdminDefaultLayout.js"
+}

@@ -1,0 +1,296 @@
+// Here you can add other styles
+.jsoa-top-border{
+    border-left: 0px;
+    border-bottom: 0px;
+    border-right: 0px;
+}
+
+.jsoager-border-bottom{
+    border-bottom: 1px solid #c8ced3;
+}
+
+.jsoa-borderless{
+    border-left: 0px;
+    border-bottom: 0px;
+    border-right: 0px;
+    border-top: 0px;
+}
+
+.jsoager-fullborder {
+    border: 1px solid #c8ced3;
+}
+
+.dotted-card-body {
+    border: 1px dotted #c8ced3;
+    background:red;
+}
+
+.nav-tabs .nav-item{
+    margin-bottom:0px;
+}
+.spacer-10{
+	margin-top: 10px;
+}
+.spacer-20 {
+    margin-top: 20px;
+}
+
+.spacer-40 {
+    margin-top: 40px;
+}
+
+.jsoa-simple-table thead > tr > th { 
+    border-top: none; 
+    border-bottom: none; 
+    padding:2.5rem 1.25rem 1rem 1.25rem;
+}
+
+tr.noBorder > td, td.noBorder{
+    border: 0;
+}
+
+.jsoa-simple-table-footer {
+    padding: 0.95rem 1rem 0rem 1.25rem;
+    background: white;
+}
+
+.jsoa-center-nav-element {
+    display: inline-block;
+    float: none;
+    vertical-align: top;
+}
+
+.white-background{
+    background: white;
+}
+
+.jsoa-table-title {
+    color: #3F51B5;
+}
+
+.jsoager-link, a {
+    color: black;
+}
+
+td.paddingless,
+.paddingless,
+.jsoager-paddingless-cardbody {
+    padding:0;
+}
+
+td.treetable-item-0 {
+	padding:0px;
+}
+
+td.treetable-item {
+	background-color:white;
+	border-bottom:2px solid #e4e5e6;
+	padding: 10px;
+}
+
+.list-group-item-tree-item-0 {
+}
+
+.list-group-item-tree-item:hover{
+	background-color:white;
+}
+
+.jsoager-card-title {
+    padding: 0.72rem 0.72rem 0.50rem 1rem;
+}
+
+
+.btn-file input[type=file] {
+    position: absolute;
+    outline: none;
+    cursor: inherit;
+    display: block;
+}
+
+.jsoager-form-popover{
+    min-width: 400px;
+}
+
+.jsoager-user-badge {
+    color:white;
+    background: black;
+    padding:0.25rem;
+    border-radius: 25px;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.app-header .nav-item .nav-link > .img-avatar, .app-header .nav-item .avatar.nav-link > img{
+    height: 25px;
+}
+
+.jsoager-header-logo,
+.jsoager-container-location-logo {
+    margin-right:5px;
+}
+
+.jsoager-container-location{
+    border: 1px solid grey;
+    padding: 3px;
+    border-radius: 25px;
+}
+
+.jsoager-bread-spacer{
+    background: #fff;
+    min-height:46px;
+    border-bottom: 1px solid #c8ced3;
+    padding: 0px;
+}
+
+.jsoager-padding-less{
+    padding: 0px;
+}
+
+.jsoager-bread .breadcrumb{
+    background: transparent;
+    border:0px;
+}
+
+.jsoager-bread .breadcrumb-item {
+    font-size: 1.5rem;
+    font-weight: 300;
+    line-height: 1.2;
+}
+
+.img-profile{
+    height: 185px;
+    display:block;
+    margin:auto;
+}
+
+.jsoager-profile-text-item-1,
+.jsoager-profile-text-item{
+  text-align: center;  
+  margin-bottom:0;
+}
+
+.jsoager-profile-text-item-1{
+    font-size: 22px;
+}
+
+.jsoager-transparent-background {
+    background: transparent;
+}
+
+/**
+* Reactjson-form custom
+*/
+.control-label-view{
+    font-weight: 200;
+}
+.control-label{
+    font-weight: 600;
+}
+.control-value-view {
+	font-weight: 600;
+}
+legend{
+    border-bottom: 1px solid #c8ced3;
+    padding:20px 0px 0px 0px;
+    font-weight: 600;
+}
+
+.objectarray-top-title{
+    padding: 20px 0px 0px 0px;
+}
+
+.objectarray-bottom-title{
+    padding: 0px 0px 0px 0px;
+    border-bottom: 1px dotted #c8ced3;
+}
+
+.jsoager-form-cardbody,
+.jsoager-form-card {
+    margin-bottom:0px;
+}
+
+.jsoager-form-footer-actions{
+	margin-top:10px;
+	margin-bottom:20px;
+}
+
+.jsoager-btm-margin-10{
+    margin-bottom:10px;
+}
+
+.jsoager-top-margin-10{
+    margin-top:10px;
+}
+
+.jsoager-top-margin-20{
+    margin-top:20px;
+}
+
+.jsoager-top-margin-20{
+    margin-top:20px;
+}
+
+.jsoager-form-title-level-0{
+    font-size: 24px;
+	font-weight: 700;
+	color:#3F51B5;
+}
+
+.jsoager-form-title-level-1{
+    font-size: 18px;
+	font-weight: 500;
+	color:#3F51B5;
+}
+
+.jsoager-form-title-level-0-line{
+    padding: 0px 0px 0px 0px;
+	//border-bottom: 1px solid #EEEEEE;
+	border-bottom: 0px solid #EEEEEE;
+}
+
+.description{
+    opacity: 0.7;
+}
+
+.table > tbody > tr:first-child > td {
+    border: none;
+}
+
+.jsoager-form-error{
+	color: red;
+}
+.jsoager-left-pane{
+	height: calc(100vh - 200px);
+}
+.jsoager-scroll-y{
+	overflow-y: scroll;
+}
+
+.div-float-left{
+	float: left;
+	overflow:hidden;
+	width:85%;	
+}
+
+.div-float-right{
+	float:right;
+	width:15%;
+	display:inline-block;
+	margin-top:10px;
+	height:100%;
+	min-height:100%;
+}
+
+.jsoager-treeitem {
+	background-color:white;
+	border: 1px solid rgba(0, 0, 0, 0.125);
+	border-radius: 0.25rem;
+}
+
+.list-group-item:last-child,
+.list-group-item:first-child,
+.list-group-item{
+	border-right:0px;
+	border-top-right-radius: 0rem;
+	border-bottom-right-radius: 0rem;
+}

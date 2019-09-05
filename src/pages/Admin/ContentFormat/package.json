@@ -1,0 +1,6 @@
+{
+  "name": "ContentFormats",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./ContentFormats.js"
+}

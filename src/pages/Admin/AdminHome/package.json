@@ -1,0 +1,6 @@
+{
+  "name": "AdminHome",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./AdminHome.js"
+}
