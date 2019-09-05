@@ -41,5 +41,7 @@ _env/*.*
 # nodes modules
 node_modules/
 node_modules/*.*
+node/
+build/
  
 
