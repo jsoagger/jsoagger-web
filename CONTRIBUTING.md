@@ -1,6 +1,6 @@
-# Contributing to JSOAGER
+# Contributing to JSOAGGER
 
-Looking to contribute something to JSOAGER? **Here's how you can help.**
+Looking to contribute something to JSOAGGER? **Here's how you can help.**
 
 Please take a moment to review this document in order to make the contribution process easy and effective for everyone involved.
 
@@ -8,7 +8,7 @@ Following these guidelines helps to communicate that you respect the time of the
 
 ## Using the issue tracker
 
-The [issue tracker](https://github.com/jsoagerissues) is the preferred channel for [bug reports](#bug-reports), [features requests](#feature-requests) and [submitting pull requests](#pull-requests), but please respect the following restrictions:
+The [issue tracker](https://github.com/jsoaggerissues) is the preferred channel for [bug reports](#bug-reports), [features requests](#feature-requests) and [submitting pull requests](#pull-requests), but please respect the following restrictions:
 
 * Please **do not** use the issue tracker for personal support requests.
 
@@ -16,7 +16,7 @@ The [issue tracker](https://github.com/jsoagerissues) is the preferred channel f
   Use [GitHub's "reactions" feature](https://github.com/blog/2119-add-reactions-to-pull-requests-issues-and-comments)
   instead.
 
-* Please **do not** open issues or pull requests regarding the code in  [`@jsoager/jsoager`](https://github.com/jsoager/jsoager-react) (open them in their respective repositories).
+* Please **do not** open issues or pull requests regarding the code in  [`@jsoagger/jsoagger`](https://github.com/jsoagger/jsoagger-react) (open them in their respective repositories).
 
 ## Bug reports
 
@@ -90,7 +90,7 @@ included in the project:
    # Navigate to the newly cloned directory
    cd free-react-admin-template
    # Assign the original repo to a remote called "upstream"
-   git remote add upstream https://github.com/jsoager/jsoager-free-react-admin-template.git
+   git remote add upstream https://github.com/jsoagger/jsoagger-free-react-admin-template.git
    ```
 
 2. If you cloned a while ago, get the latest changes from upstream:
