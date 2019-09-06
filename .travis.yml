@@ -17,11 +17,6 @@ matrix:
       dist: xenial
       jdk: openjdk11
             
-cache:
-    directories:
-    - $HOME/.m2/repository
-    
-
 services:
   - docker    
 
@@ -31,8 +26,7 @@ before_install:
     - echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
     - docker version
     - docker info
-    - mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
-    - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
+    - export project_version=1.0.0
     - echo $project_version
 
 
