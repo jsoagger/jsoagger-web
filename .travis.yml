@@ -23,6 +23,7 @@ before_install:
     - docker info
     - export project_version=1.0.0
     - echo $project_version
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
 
 install:
@@ -35,12 +36,5 @@ deploy:
         - docker build  -f Dockerfile-prod -t jsoagger/jsoagger-web:$project_version .
       on:
         branch: master
-
-    - provider: script
-      script: 
-        - docker build  -f Dockerfile-prod -t jsoagger/jsoagger-web:$project_version .
-      on:
-        tags: true
-        all_branches: true
          
         
