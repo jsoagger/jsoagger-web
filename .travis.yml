@@ -1,6 +1,7 @@
-language: node_js
-node_js:
-  - 12.2.0
+#language: node_js
+language: java
+#node_js:
+#  - 12.2.0
 
 matrix:
   include:
@@ -26,14 +27,14 @@ before_install:
     - npm run build
 
 
-#install:
-#    docker build -f Dockerfile -t jsoagger/jsoagger-webdev:$project_version .      
+install:
+    docker build -f Dockerfile -t jsoagger/jsoagger-webdev:$project_version .      
     
 
 deploy: 
     - provider: script
       script: 
-        - docker push jsoagger/jsoagger-webdev:$project_version
+#        - docker push jsoagger/jsoagger-webdev:$project_version
         - docker build  -f Dockerfile-prod -t jsoagger/jsoagger-web:$project_version .
       on:
         branch: master
