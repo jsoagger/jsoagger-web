@@ -23,12 +23,12 @@ before_install:
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
 install:
-    docker build -f Dockerfile-travis -t jsoagger/jsoagger-webdev:$project_version .      
+    docker build -f Dockerfile-travis -t jsoagger/soagg-webdev:$project_version .      
     
 deploy:
   provider: script
   script: 
-    - docker push jsoagger/jsoagger-webdev:$project_version
+    - docker push jsoagger/soagg-webdev:$project_version
   on:
     branch: master
              
