@@ -8,9 +8,11 @@ matrix:
 cache:
   directories:
     - node_modules
+
             
 services:
   - docker    
+
 
 before_install:
     - export GPG_TTY=/dev/pts/4
@@ -22,8 +24,10 @@ before_install:
     - echo $project_version
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
+
 install:
     docker build -f Dockerfile-travis -t jsoagger/soagg-webdev:$project_version .      
+    
     
 deploy:
   provider: script
