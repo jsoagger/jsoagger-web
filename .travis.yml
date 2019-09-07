@@ -32,7 +32,6 @@ install:
 deploy: 
     - provider: script
       script: 
-#        - docker push jsoagger/jsoagger-webdev:$project_version
         - docker build  -f Dockerfile-prod -t jsoagger/jsoagger-web:$project_version .
       on:
         branch: master
@@ -40,7 +39,6 @@ deploy:
     - provider: script
       script: 
         - docker build  -f Dockerfile-prod -t jsoagger/jsoagger-web:$project_version .
-        - docker push jsoagger/jsoagger-web:$project_version
       on:
         tags: true
         all_branches: true
