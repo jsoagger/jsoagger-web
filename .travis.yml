@@ -24,7 +24,7 @@ before_install:
 
 
 install:
-    docker build -f Dockerfile -t jsoagger/jsoagger-web:$project_version .      
+    docker build -f Dockerfile -t jsoagger/jsoagger-webdev:$project_version .      
     
 
 deploy: 
