@@ -1,24 +1,17 @@
-language: java
-
-# -------------  ALL BRANCHES FIRE MVN INSTALL  ------------- ------------- --------
-# DEVELOP: BUILD ON COMMIT (NO DEPLOY)
-# MASTER: BUILD ON COMMIT (NO DEPLOY)
-# +++++++++++++  STABLE AND TAGS FIRE DEPLOY    ++++++++++++++++++++++++++++++++++++
-# STABLE: BUILD ON COMMIT + DEPLOY SNAPSHOT RELEASE
-# TAGS: BUILD ON COMMIT + DEPLOY SONATYPE VERSION  RELEASE
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# Be aware when adding 'branch.only' they can exclude tags deployment is not fired
-# -------------------------- ------------- ------------- ------------- ------------- 
-
+language: node_js
+node_js:
+  - 12.2.0
 
 matrix:
   include:
     - os: linux
-      dist: xenial
-      jdk: openjdk11
+      dist: trusty
+
+cache: npm
             
 services:
   - docker    
+
 
 before_install:
     - export GPG_TTY=/dev/pts/4
@@ -32,6 +25,7 @@ before_install:
 
 install:
     docker build -f Dockerfile -t jsoagger/jsoagger-web:$project_version .      
+    
 
 deploy: 
     - provider: script
