@@ -1,7 +1,4 @@
 language: java
-#language: node_js
-#node_js:
-#  - 12.2.0
 
 matrix:
   include:
@@ -25,16 +22,14 @@ before_install:
     - echo $project_version
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
-
 install:
-    docker build -f Dockerfile -t jsoagger/jsoagger-webdev:$project_version .      
+    docker build -f Dockerfile-travis -t jsoagger/jsoagger-webdev:$project_version .      
     
-
-#deploy: 
-#    - provider: script
-#      script: 
-#        - docker build  -f Dockerfile-prod -t jsoagger/jsoagger-web:$project_version .
-#      on:
-#        branch: master
-         
+deploy:
+  provider: script
+  script: 
+    - docker push jsoagger/jsoagger-webdev:$project_version
+  on:
+    branch: master
+             
         
