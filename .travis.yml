@@ -24,7 +24,6 @@ before_install:
     - docker info
     - export project_version=1.0.0
     - echo $project_version
-    - npm run build
 
 
 install:
