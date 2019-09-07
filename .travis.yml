@@ -7,7 +7,9 @@ matrix:
     - os: linux
       dist: trusty
 
-cache: npm
+cache:
+  directories:
+    - node_modules
             
 services:
   - docker    
@@ -21,10 +23,11 @@ before_install:
     - docker info
     - export project_version=1.0.0
     - echo $project_version
+    - npm run build
 
 
-install:
-    docker build -f Dockerfile -t jsoagger/jsoagger-webdev:$project_version .      
+#install:
+#    docker build -f Dockerfile -t jsoagger/jsoagger-webdev:$project_version .      
     
 
 deploy: 
