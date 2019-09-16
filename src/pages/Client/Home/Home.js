@@ -16,8 +16,7 @@ class Home extends Component {
         return (
         	<div className="flex-row justify-content-center">
                     <Row>
-                    	<Col md="2"></Col>
-                        <Col sm="12" md="12" lg="12" xl="10">
+                        <Col xs="12" md="12" lg="12" xl="12">
                             <div>
                                 <p className="float-left display-4 mr-4">Welcome to JSOAGGER</p>
                             </div>
@@ -27,14 +26,12 @@ class Home extends Component {
                                 </p>
                             </div>
                         </Col>
-                        <Col md="2"></Col>
                     </Row>
                     <Row className="justify-content-center">
                         <div className="w-spacer"/>
                     </Row>
                     <Row>
-                    	<Col md="1"></Col>
-                        <Col md="5">
+                        <Col xs="12" md="12" lg="6" xl="6">
                             <div className="clearfix">
                                 <img src={mobile1} className="" alt="toto" width="100" height="200"/>
                                 <h4 className="pt-4">JSOAGGER for <i>IOS</i> and <i>ANDROID</i> platforms</h4>
@@ -44,8 +41,10 @@ class Home extends Component {
 		                            <Button  color="primary">TRY IT!</Button>
 		                        </Link>
                             </div>
+                            <div className="w-spacer"/>
+                            <div className="w-spacer"/>
                         </Col>
-                        <Col md="5">
+                        <Col xs="12" md="12" lg="6" xl="6">
                             <div className="clearfix">
                                 <img src={ipad} className="" alt="toto" width="200" height="200"/>
                                 <h4 className="pt-4">JSOAGGER for <i>Desktop</i> and <i>Embedded</i> platforms</h4>
@@ -55,8 +54,9 @@ class Home extends Component {
 		                            <Button  color="primary">TRY IT!</Button>
 		                        </Link>
 	                        </div>
+	                        <div className="w-spacer"/>
+	                        <div className="w-spacer"/>
                         </Col>
-                        <Col md="1"></Col>
                     </Row>
             </div>
         );

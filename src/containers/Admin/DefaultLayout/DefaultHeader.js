@@ -63,7 +63,7 @@ class DefaultHeader extends Component {
             <React.Fragment>
                 <AppSidebarToggler className="d-lg-none" display="md" icon="icon-home" mobile />
 
-                <AppNavbarBrand className="d-lg-down-none"
+                <AppNavbarBrand className="d-lg-down-none navbrand-jsoagger-logo"
                     full={{ src: logo, width: 180, height: 55, alt: 'JSOAGGER Logo' }}
                     minimized={{ src: sygnet, width: 30, height: 30, alt: 'JSOAGGER Logo' }}/>
 
@@ -71,10 +71,10 @@ class DefaultHeader extends Component {
 
                 <Nav className="d-md-down-none" navbar>
                     <NavItem className="text-center px-3">
-                        <strong>Business Administration</strong>
+                        <strong>Business manager</strong>
                     </NavItem>
                 </Nav>
-
+                
                 <Nav className="ml-auto" navbar>
                     <NavItem className="px-3">
                         <NavLink to="/c/home" className="nav-link" onClick={this.switchToClientView}>
