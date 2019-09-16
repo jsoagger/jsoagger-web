@@ -141,14 +141,13 @@ const emptyTableContent = (title, description, subDescription, emptyActions) => 
 	
 	return (
         <div className="flex-row align-items-center">
-            <Container>
                 <Row className="justify-content-center">
-                    <Col xs="12" sm="10" md="10">
+                    <Col xs="12" sm="12" md="12" lg="12" xl="10">
                         <Card className="card-accent-warning">
                             <CardBody>
                                 <Jumbotron className="white-background" fluid>
                                     <Container fluid className="white-background">
-                                        <h3 className='display-3'>{title}</h3>
+                                        <p className='display-4'>{title}</p>
                                         <p className='lead'>{description}</p>
                                         <hr className='my-2'/>
                                         <p>{subDescription}</p>
@@ -161,7 +160,6 @@ const emptyTableContent = (title, description, subDescription, emptyActions) => 
                         </Card>
                     </Col>
                 </Row>
-            </Container>
         </div>
   )
 }

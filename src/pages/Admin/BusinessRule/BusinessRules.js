@@ -211,11 +211,11 @@ class BusinessRules extends Component {
 		if(this.state.phase === '0'){
 			vetoable = (
 				<Row>
-                    <Col md="3">
+		            <Col xs="4" sm="4" md="4" lg="4" xl="4">
                         <Label htmlFor="vetoable">Vetoable</Label>
                     </Col>
-                    <Col md="9">
-                    	<Input checked={this.state.vetoable} type="checkbox" name="vetoable" id="vetoable" onChange={this.handleChange}/>
+                    <Col xs="2">
+                        <Input checked={this.state.vetoable} type="checkbox" name="vetoable" id="vetoable" onChange={this.handleChange}/>                    	
                     </Col>
                 </Row>
 			)
@@ -248,13 +248,15 @@ class BusinessRules extends Component {
 	                                        <Col md="12">
 	                                            <Card>
 	                                                <CardBody>
-	                                                    {comp}
+	                                                	<Row>
+		                                                    <Col xs="12" sm="12" md="12" lg="12" xl="12">{comp}</Col>
+	                                                	</Row>
 	                                                    <FormGroup>
 		                                                    <Row>
-		                                                        <Col md="3">
+		                                                        <Col xs="12" sm="12" md="12" lg="12" xl="12">
 		                                                            <Label htmlFor="select">Business event</Label>
 		                                                        </Col>
-		                                                        <Col xs="6" md="9">
+		                                                        <Col xs="12" sm="12" md="8" lg="12" xl="12">
 		                                                            <BusinessEventSelectInput businessEventChangeFunction={this.businessEventChange}
 		                                                            	defaultValue={this.state.eventKey}/>
 		                                                        </Col>
@@ -262,10 +264,10 @@ class BusinessRules extends Component {
 	                                                    </FormGroup>
 	                                                    <FormGroup>
 		                                	                <Row>
-		                                	                    <Col md="3">
+		                                                        <Col xs="12" sm="12" md="12" lg="12" xl="12">
 		                                	                        <Label htmlFor="phase">Transaction phase</Label>
 		                                	                    </Col>
-		                                	                    <Col xs="6" md="9">
+		                                                        <Col xs="12" sm="12" md="12" lg="12" xl="12">
 		                                		                    <Input value={this.state.phase} type="select" name="phase" id="phase" onChange={this.handleChange}>
 		                                			                    <option value="0">Before commit</option>
 		                                			                    <option value="1">After success commit</option>
@@ -275,7 +277,9 @@ class BusinessRules extends Component {
 		                                	                </Row>
 		                                	            </FormGroup>
 		                                	            <FormGroup>
-		                                	            	{vetoable}
+		                                	            	<Row>
+		                                	            	<Col xs="12" sm="12" md="12" lg="12" xl="12">{vetoable}</Col>
+		                                	            	</Row>
 		                                	            </FormGroup>
 	                                                </CardBody>
 	                                            </Card>

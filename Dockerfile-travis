@@ -20,4 +20,7 @@ COPY . /app
 RUN npm rebuild node-sass
 RUN npm run build
 
-CMD ["npm", "start"]
+ARG JSOAGGER_API_URL="PLEASE_SET JSOAGGER_API_URL IN YOUR ENV"
+ENV JSOAGGER_API_URL="${JSOAGGER_API_URL}"
+
+CMD [REACT_APP_BACKEND_HOST=$JSOAGGER_API_URL, "npm", "start"]

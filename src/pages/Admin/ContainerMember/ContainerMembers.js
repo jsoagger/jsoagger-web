@@ -128,12 +128,12 @@ class ContainerMembers extends Component {
     
     render() {
         return (
-            <Container>
+            <React.Fragment>
                 <Row>
-                    <Col md="3">
+                    <Col xs="12" sm="12" md="12" lg="4" xl="4">
                         <div class="sidebar-nav-fixed affix">
                             <Row>
-                                <Col md="12">
+                                <Col xs="12" sm="12" md="12" lg="12" xl="12">
                                     <NavigationMenu {...this.props}
                                     	register={this.register}
                                         navigateMembers={this.navigateMembers}
@@ -147,13 +147,13 @@ class ContainerMembers extends Component {
 	                        </Row>
 	                    </div>
 	                </Col>
-                    <Col md="8">
+                    <Col xs="12" sm="12" md="12" lg="8" xl="8">
                         <div id="jsoagger-search-member-concent-area">
                             <NavigateContainerMembers {...this.props}/>
                         </div>
                     </Col>
                 </Row>
-            </Container>
+            </React.Fragment>
         )
     }
 }

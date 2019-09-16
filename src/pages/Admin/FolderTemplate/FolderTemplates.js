@@ -104,11 +104,11 @@ class FolderTemplates extends Component {
         return (
             <div>
                 <Row>
-                    <Col lg="2"></Col>
-                    <Col lg="8">
+					<Col xs="0" sm="0" md="0" lg="1" xl="2"></Col>
+					<Col xs="12" sm="12" md="12" lg="10" xl="8">
                         <ListGroupDataTable items={JSON.stringify(items)} rows={rows} metaData={JSON.stringify(metaData)} tableConfig={tableConfig}/>
                     </Col>
-                    <Col lg="2"></Col>
+                    <Col xs="0" sm="0" md="0" lg="1" xl="2"></Col>
                 </Row> 
             </div>
        )

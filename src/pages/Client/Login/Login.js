@@ -183,8 +183,8 @@ class Login extends Component {
         const jsonschema = JSON.parse(jsonschemadecoded);
         console.debug("jsonschema decoded: " + jsonschemadecoded);
         
-    	const container = await containerService.getApplicationRootContainer();
-    	localStorage.setItem('workingContainer', JSON.stringify(container.data.attributes))
+//    	const container = await containerService.getApplicationRootContainer();
+//    	localStorage.setItem('workingContainer', JSON.stringify(container.data.attributes))
 
         this.setState({
         	uischema:uischema, 
@@ -236,7 +236,7 @@ class Login extends Component {
                                 <Card className="text-white bg-primary py-5 d-md-down-none" style={{ width: '44%' }}>
 	                                <CardBody className="text-center">
 	                                  <div>
-	                                    <img src={logo} className="img-avatar" alt="JSOAGGER logo" />
+	                                    <img src={logo} className="img-logo-l" alt="JSOAGGER logo" />
 	                                    <div className="flex-row align-items-center">
 	                                        <p className="h3">Welcome to JSOAGGER</p>
 	                                    </div>

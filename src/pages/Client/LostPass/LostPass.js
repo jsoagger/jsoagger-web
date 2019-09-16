@@ -113,7 +113,7 @@ class LostPass extends React.Component {
 			                        <Card className="p-4">
 			                        	<CardBody>
 			                        		<div>
-			                        			<img src={logo} className="img-avatar" alt="JSOAGGER logo" width="60"/>
+			                        			<img src={logo} className="img-logo-s" alt="JSOAGGER logo"/>
 			                        			<h1>LOST PASSWORD</h1>
 			                        			<hr/>
 			                        			<h5>Please provide your login</h5>

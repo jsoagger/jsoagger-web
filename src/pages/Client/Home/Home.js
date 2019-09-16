@@ -17,15 +17,13 @@ class Home extends Component {
         	<div className="flex-row justify-content-center">
                     <Row>
                     	<Col md="2"></Col>
-                        <Col md="8">
+                        <Col sm="12" md="12" lg="12" xl="10">
                             <div>
-                                <h3 className="float-left display-3 mr-4">Welcome to JSOAGGER</h3>
+                                <p className="float-left display-4 mr-4">Welcome to JSOAGGER</p>
                             </div>
                             <div>
                                 <p className="text-muted float-left">
-                                    JSOAGGER concept consists in generating a view from an XML or JSON configuration file, 
-                                    which improves the maintainability, visibility and reusability of the components. 
-                                    JSOAGGER uses the same codebase for web, mobile, desktop and integrated environments. 
+                                    JSOAGGER is an open source and free framework for building cross platform Java applications. Its integrates technical framworks such as spring-boot, JPA, Hibernate, ReactJS, JavaFX11 and Docker container in order to build robust applications based on current market standards. 
                                 </p>
                             </div>
                         </Col>
@@ -35,8 +33,8 @@ class Home extends Component {
                         <div className="w-spacer"/>
                     </Row>
                     <Row>
-                    	<Col md="2"></Col>
-                        <Col md="4">
+                    	<Col md="1"></Col>
+                        <Col md="5">
                             <div className="clearfix">
                                 <img src={mobile1} className="" alt="toto" width="100" height="200"/>
                                 <h4 className="pt-4">JSOAGGER for <i>IOS</i> and <i>ANDROID</i> platforms</h4>
@@ -47,7 +45,7 @@ class Home extends Component {
 		                        </Link>
                             </div>
                         </Col>
-                        <Col md="4">
+                        <Col md="5">
                             <div className="clearfix">
                                 <img src={ipad} className="" alt="toto" width="200" height="200"/>
                                 <h4 className="pt-4">JSOAGGER for <i>Desktop</i> and <i>Embedded</i> platforms</h4>
@@ -58,7 +56,7 @@ class Home extends Component {
 		                        </Link>
 	                        </div>
                         </Col>
-                        <Col md="2"></Col>
+                        <Col md="1"></Col>
                     </Row>
             </div>
         );

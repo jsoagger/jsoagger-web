@@ -30,12 +30,9 @@ class DefaultHeader extends Component {
         
         return (
             <React.Fragment>
-                <Nav className="d-md-down-none" navbar>
-                    <NavItem className="px-1"/>
-                </Nav>
-
-                <AppNavbarBrand
-                    full={{ src: logo, width: 155, height: 55, alt: 'JSOAGGER Logo' }}
+                
+                <AppNavbarBrand className="d-lg-down-none"
+                    full={{ src: logo, width: 180, height: 55, alt: 'JSOAGGER Logo' }}
                     minimized={{ src: sygnet, width: 30, height: 30, alt: 'JSOAGGER Logo' }}/>
 
                 
@@ -60,8 +57,6 @@ class DefaultHeader extends Component {
 	                        <span><strong>{container}</strong></span>
 	                    </NavLink>
 	                </NavItem>
-
-                   
                     <UserMenu />
                 </Nav>
 

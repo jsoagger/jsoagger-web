@@ -47,12 +47,12 @@ class BusinessEventSelectInput extends Component {
         }
 
         return (
-            <div>
+            <React.Fragment>
                 <Input value={this.props.defaultValue} type="select" name="select" id="select" onChange={this.onChange}>
                     <option value="">Any event</option>
                     {options}
                 </Input>
-            </div>
+            </React.Fragment>
         )
     }
 }
