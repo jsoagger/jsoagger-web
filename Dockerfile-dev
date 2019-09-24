@@ -1,4 +1,5 @@
-# docker build -t jsoagger/jsoagger-web:latest
+# docker build -t jsoagger/jsoagger-webdev
+:latest
 
 # base image
 FROM node:12.2.0-alpine
