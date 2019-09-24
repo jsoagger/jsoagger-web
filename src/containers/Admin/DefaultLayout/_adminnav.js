@@ -68,20 +68,6 @@ export default {
         ],
     },
     {
-	    title: true,
-	    name: 'Batch',
-	  },
-	  {
-	    name: 'Load data',
-	    url: '/admin/p/batchLoad',
-	    icon: 'fa fa-exchange'
-	  },
-	  {
-	    name: 'Export data',
-	    url: '/admin/p/batchExport',
-	    icon: 'fa fa-exchange'
-	  },
-    {
       title: true,
       name: 'Misc',
       wrapper: {
@@ -90,12 +76,14 @@ export default {
       },
     },
     {
-      name: 'View definitions',
-      url: '/admin/p/viewDefinitions',
-    },
+	    name: 'Load data',
+	    url: '/admin/p/batchLoad',
+	    icon: 'fa fa-exchange'
+	  },
     {
       name: 'Enumerations',
       url: '/admin/p/enumerations',
+      icon: 'fa fa-list-alt'
     },
     {
       name: 'GITHUB',
