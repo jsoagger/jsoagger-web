@@ -106,48 +106,47 @@ class LostPass extends React.Component {
         return (
         	<div className="app flex-row align-items-center">
                 <Container>
-                    <Row className="justify-content-center">
-		                <Col md="6">
+		            <Row className="justify-content-center">
+		                <Col md="8">
 		                	<div id="lost_pass_content_container">
-			                    <CardGroup>
-			                        <Card className="p-4">
-			                        	<CardBody>
-			                        		<div>
-			                        			<img src={logo} className="img-logo-s" alt="JSOAGGER logo"/>
-			                        			<h1>LOST PASSWORD</h1>
-			                        			<hr/>
-			                        			<h5>Please provide your login</h5>
-			                        		</div>
-			                            	<Form>
-			              	                  <div className="spacer-20">&nbsp;</div>
-			              	                  <div>{this.state.formError}</div>
-			              	                  <InputGroup className="mb-3">
-			              	                    <InputGroupAddon addonType="prepend">
-			              	                      <InputGroupText>
-			              	                        <i className="icon-lock"></i>
-			              	                      </InputGroupText>
-			              	                    </InputGroupAddon>
-			              	                    <Input type="text" required="true" name="email" placeholder="Your login" autoComplete="login" onChange={(e) => this.handleUserInput(e)}/>
-			              	                  </InputGroup>
-			              	                </Form>
-			                        	</CardBody>
-			                        	<CardFooter>
-			                        		<Row>
-			                        			<Col lx="6" lg="6">
-			                        				<Button block color="primary" onClick={(e) => this.backToLogin(e)}>Login</Button>
-			                        			</Col>
-			                        			<Col lx="6" lg="6">
-			                        				<Button block color="danger" type="submit" disabled={!this.state.formValid} onClick={(e) => this.doSendUpdatePasswordLink(e)}>Done</Button>
-			                    				</Col>
-			                        		</Row>
-			                        	</CardFooter>
-			                        </Card>
-			                    </CardGroup>
-		                    </div>
+			                    <Card className="p-4">
+			                    	<CardBody>
+			                    		<div>
+			                    			<img src={logo} className="img-logo-s" alt="JSOAGGER logo"/>
+			                    			<h1>LOST PASSWORD</h1>
+			                    			<hr/>
+			                    			<h5>Please provide your login</h5>
+			                    		</div>
+			                        	<Form>
+			          	                  <div className="spacer-20">&nbsp;</div>
+			          	                  <div>{this.state.formError}</div>
+			          	                  <InputGroup className="mb-3">
+			          	                    <InputGroupAddon addonType="prepend">
+			          	                      <InputGroupText>
+			          	                        <i className="icon-lock"></i>
+			          	                      </InputGroupText>
+			          	                    </InputGroupAddon>
+			          	                    <Input type="text" required="true" name="email" placeholder="My login" autoComplete="login" onChange={(e) => this.handleUserInput(e)}/>
+			          	                  </InputGroup>
+			          	                </Form>
+			                    	</CardBody>
+			                    	<CardFooter>
+			                    		<Row>
+			                    			<Col lx="6" lg="6">
+			                    				<Button block color="primary" onClick={(e) => this.backToLogin(e)}>Back</Button>
+			                    			</Col>
+			                    			<Col lx="6" lg="6">
+			                    				<Button block color="danger" type="submit" disabled={!this.state.formValid} 
+			                    					onClick={(e) => this.doSendUpdatePasswordLink(e)}>Done</Button>
+			                				</Col>
+			                    		</Row>
+			                    	</CardFooter>
+			                    </Card>
+			                 </div>
 		                </Col>
 		             </Row>
-                </Container>
-            </div>
+		         </Container>
+		      </div>
         );
     }
 }

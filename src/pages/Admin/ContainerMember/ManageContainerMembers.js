@@ -38,13 +38,15 @@ import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import rootTypeManaged from 'pages/Admin/Type/_typesManaged.js';
 import BusinessClassAndTypeSelect from '_components/BusinessClassAndTypeSelect';
-import SearchResult from './SearchMemberResult.js'
-import SearchMembers from './SearchMembers.js'
-
+import SearchMembersResult from './SearchMembersResult.js'
+import AddExistingMember from './AddExistingMember.js'
+import AddExistingMemberResult from './AddExistingMemberResult.js'
 /**
- * 
+ * Members are people/party having access into that container.
+ * When created, parties are affiliated to  /Application/Unaffiliated, they
+ * do not have access to other containers. They will not appear in search result.
  */
-class NavigateContainerMembers extends Component {
+class ManageContainerMembers extends Component {
 
 	constructor(props){
 		super(props)
@@ -53,8 +55,8 @@ class NavigateContainerMembers extends Component {
 	
 	renderResult(response){
 		ReactDOM.render(
-				<SearchResult results={response}/>, 
-					document.getElementById('NavigateMembers_searchResults'));
+				<AddExistingMemberResult results={response}/>, 
+					document.getElementById('NavigateMembers_SearchMembersResults'));
 	}
 	
     render() {
@@ -64,13 +66,13 @@ class NavigateContainerMembers extends Component {
         )
 
         var defaultView = <div>
-                <SearchMembers {...this.props} 
-                	title="Navigate members"  
-                	updateArea='NavigateMembers_searchResults'
+                <AddExistingMember {...this.props} 
+                	title="Manage members"  
+                	updateArea='NavigateMembers_SearchMembersResults'
                 	renderResult={this.renderResult}
                 	filterByType={true}/>
-            	<div id="NavigateMembers_searchResults">
-            		<SearchResult {...this.props}/>
+
+            	<div id="NavigateMembers_SearchMembersResults">
             	</div>
             </div>
 
@@ -88,6 +90,6 @@ class NavigateContainerMembers extends Component {
 }
 
 
-export default NavigateContainerMembers
+export default ManageContainerMembers
 
 

@@ -12,15 +12,16 @@ class Page404 extends Component {
     return (
       <div className="flex-row align-items-center">
         <Container>
-          <JSoagerLogo />
           <Row className="justify-content-center">
+          	<Col md="2"></Col>
             <Col md="8">
-              <div className="clearfix">
+              <div>
                 <h1 className="float-left display-3 mr-1">404</h1>
                 <h4 className="pt-3">Oops! You're lost.</h4>
                 <p className="text-muted float-left">The page you are looking for was not found.</p>
               </div>
             </Col>
+            <Col md="2"></Col>
           </Row>
         </Container>
       </div>

@@ -65,15 +65,13 @@ class BusinessClassAndTypeSelect extends Component {
      */
     onBusinessClassChange(event) {
         var selectedRootType = event.target.value.split('#')[0];
-        
         if(this.props.updateFunction)
     		this.props.updateFunction('businessClass', event.target.value.split('#')[1])
-        
         if(selectedRootType){
             typeService.getByPath(selectedRootType)
             .then(json => {
                 var typeId = json.data.attributes.id;
-                typeService.getSubtypeOf(typeId, true)
+                typeService.getSubtypeOfRecursive(typeId, true)
                 .then(result => {
                     if(result.data) {
                         this.setState({rootBusinessTypeSubTypes: JSON.stringify(result.data)})

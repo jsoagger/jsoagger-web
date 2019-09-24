@@ -41,6 +41,8 @@ class AppVersion extends Component {
 		const d = installationService
 		.details(versionHistoryId)
 		.then(json => {
+			let location = json.data.attributes.moduleName 
+			document.getElementsByClassName('active breadcrumb-item')[0].innerHTML = location
 			this.setState({item: json, id: versionHistoryId});
         })
 	}
@@ -52,15 +54,13 @@ class AppVersion extends Component {
             return (
                 <div className="flex-row align-items-center">
                         <Row>
-                            <Col md="2"></Col>
-                            <Col xs="12" lg="8">
+                        	<Col xs="0" sm="0" md="0" lg="1" xl="2"></Col>
+                    		<Col xs="12" sm="12" md="12" lg="10" xl="8">
                                 <Row>
                                     <Col xs="12" lg="12">
-                                        <Card>
-                                            <CardBody>
-                                                <h3 className="jsoa-table-title">{d.attributes.moduleName} </h3>
-                                            </CardBody>
-                                        </Card>
+                                    	<div className="jsoagger-table-header">
+                                             <h3 className="jsoa-table-title">{d.attributes.moduleName} </h3>
+                                        </div>
                                     </Col>
                                 </Row>
                                 <Row>
@@ -76,7 +76,7 @@ class AppVersion extends Component {
                                     </Col>
                                 </Row>
                             </Col>
-                            <Col md="2"></Col>
+                            <Col xs="0" sm="0" md="0" lg="1" xl="8"></Col>
                          </Row>
                 </div>
             

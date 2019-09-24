@@ -6,8 +6,8 @@ import { installationService } from '_services/installation.services.js';
 
 const tableConfig = {
 	title: 'Installation history',
-	tableSize: 'md',
-	paginationSize: 'md',
+	tableSize: 'sm',
+	paginationSize: 'sm',
 	columnsConfig: [
 		{ displayComponent: (v) => inheritedIcon(v) },
         { name: 'Module', displayComponent: (v, i) => LinkTo(v,i), dataField: 'attributes.moduleName', defaultSortOrder: 'asc' },
@@ -78,16 +78,20 @@ class AppVersions extends Component {
 		const items = this.state.items;
 		const metaData = this.state.metaData;
         return (
-            <div>
+            <div className="flex-row align-items-center">
                 <Row>
-                    <Col lg="1" md="2" xl="2"></Col>
-                    <Col lg="10" md="10" xl="8">
-                        <DataTable items={JSON.stringify(items)} 
-                        	metaData={JSON.stringify(metaData)} 
-                            tableConfig={tableConfig} 
-                        paginate="false"/>
+                	<Col xs="0" sm="0" md="0" lg="1" xl="1"></Col>
+                    <Col xs="12" sm="12" md="12" lg="11" xl="10">
+                    	<Card className="no-radius no-border">
+                    		<CardBody>
+		                        <DataTable items={JSON.stringify(items)} 
+		                        	metaData={JSON.stringify(metaData)} 
+		                            tableConfig={tableConfig} 
+		                        paginate="false"/>
+	                        </CardBody>
+                        </Card>
                     </Col>
-                    <Col lg="1" md="10" xl="2"></Col>
+                    <Col xs="0" sm="0" md="0" lg="1" xl="1"></Col> 
                 </Row> 
             </div>
         ) 

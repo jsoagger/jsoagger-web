@@ -38,9 +38,12 @@ import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import rootTypeManaged from 'pages/Admin/Type/_typesManaged.js';
 import BusinessClassAndTypeSelect from '_components/BusinessClassAndTypeSelect';
-import SearchResult from './AddExistingMemberResult.js'
-import NavigateContainerMembers from './NavigateContainerMembers.js'
-
+import SearchResult from './SearchMembersResult.js'
+import ManageContainerUsers from './ManageContainerUsers.js'
+import {commons} from '../../../_helpers/commons.js';
+/**
+ * Class for searching users.
+ */
 class SearchMembers extends Component {
 	
     constructor(props){
@@ -70,41 +73,38 @@ class SearchMembers extends Component {
     renderResult(response) {
     	this.props.renderResult(response)
     }
-
+    
     searchUpdated(event){
-    	let searchTerm = event.target.value
+    	var searchTerm = event.target.value,
+    		workingContainerId = commons.getWorkingContainerId()
+    	
     	if(searchTerm !== '') {
 	    	let payload = {}
 	    	payload.searchTerm = searchTerm
 	    	payload.searchType = this.state.rootBusinessTypeSubTypes
+	    	payload.containerId = workingContainerId
 	    	
-	    	if(this.props.updateSearchTerm)
-	    		this.props.updateSearchTerm(payload)
-	    	
+	    	if(this.props.updateSearchTerm) this.props.updateSearchTerm(payload)
 	    	if(this.state.searchCriteria === 'bylogin'){
 		    	searchService
-		    		.searchUserByLoginLike(searchTerm)
-		    		.then(response => {
-		    			if(this.props.updateSearchResults)
-		    				this.props.updateSearchResults(response)
+	    		.searchContainerMemberByLoginLike(searchTerm, workingContainerId)
+	    		.then(response => {
+	    			if(this.props.updateSearchResults) this.props.updateSearchResults(response)
 	    			this.renderResult(response)
-		    	})
+	    		})
 	    	}
 		    else {
 		    	searchService
-	    		.searchUserByNameLike(searchTerm)
+	    		.searchContainerMemberByNameLike(searchTerm, workingContainerId)
 	    		.then(response => {
-	    			if(this.props.updateSearchResults)
-	    				this.props.updateSearchResults(response)
+	    			if(this.props.updateSearchResults) this.props.updateSearchResults(response)
 	    			this.renderResult(response)
 	    		})
 		    }
     	}
     	else {
     		let empty = {}
-    		if(this.props.updateSearchResults)
-    			this.props.updateSearchResults(empty)
-    		
+    		if(this.props.updateSearchResults) this.props.updateSearchResults(empty)
     		this.renderResult(empty)	
     	}
     }
@@ -112,14 +112,14 @@ class SearchMembers extends Component {
     displaySelectFunction(businessClass, businessTypes){
     	if(this.state.filterByType){
     		return (
-    				<FormGroup row>
-			            <Col md="4">
-			                <FormGroup>{businessClass}</FormGroup>
-			            </Col>
-			            <Col md="4">
-			                <FormGroup>{businessTypes}</FormGroup>
-			            </Col>
-			        </FormGroup>
+				<FormGroup row>
+		            <Col md="4">
+		                <FormGroup>{businessClass}</FormGroup>
+		            </Col>
+		            <Col md="4">
+		                <FormGroup>{businessTypes}</FormGroup>
+		            </Col>
+		        </FormGroup>
 			)
     	}
         return (
@@ -142,20 +142,18 @@ class SearchMembers extends Component {
         	updateFunction={this.updateFunction}/>
         const criteria = this.state.searchCriteria === 'bylogin' ? "By login" : "By name"
     	return (
+    		<React.Fragment>
             <Row>
                 <Col md="12">
-                    <Card>
+                    <Card className="no-radius">
                         <CardHeader><h3>{this.props.title}</h3></CardHeader>
                         <CardBody> 
                             <FormGroup row>
                             	<Col xl="12">
                                     <FormGroup>
                                     	<Row>
-                                    		<Col xl="12">
+                                    		<Col xl="10">
 		                                        <InputGroup>
-		                                            <InputGroupAddon addonType="prepend">
-		                                                <Button type="button" color="primary"><i className="fa fa-search"></i> Search</Button>
-		                                            </InputGroupAddon>
 		                                            <Input type="text" id="input1-group2" name="input1-group2" 
 		                                            	placeholder="Search for user ..."
 		                                            	defaultValue={this.props.searchTerm}
@@ -182,9 +180,13 @@ class SearchMembers extends Component {
                     </Card>
                 </Col>
             </Row>
+            <div className="spacer-20">&nbsp;</div>
+            </React.Fragment>
     	)
     }
 }
 
 
 export default SearchMembers
+
+

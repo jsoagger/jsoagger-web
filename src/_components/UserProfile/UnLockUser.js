@@ -93,7 +93,7 @@ class UnLockUser extends React.Component {
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Unlock user</ModalHeader>
           <ModalBody>
-			Unlock the user. User can now connect to system with its login/password.
+			Unlock the user. User can connect with his login/password.
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={this.doUnlockUser}>Unlock user</Button>{' '}

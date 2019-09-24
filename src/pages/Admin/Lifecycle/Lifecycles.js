@@ -26,8 +26,8 @@ import {commons} from '../../../_helpers/commons.js';
 
 const tableConfig = {
 	title: 'Lifecycles',
-	tableSize: 'md',
-	paginationSize: 'md',
+	tableSize: 'sm',
+	paginationSize: 'sm',
 	emptyMessageTitle: 'No lifecycles',
 	emptyMessageDescription: commons.getWorkingContainerName() + ' has no lifecycles',
 	emptyMessageSubDescription: 'You can either change working container or upload new lifecycle.',
@@ -37,9 +37,9 @@ const tableConfig = {
 	    { name: 'Version', dataField: 'attributes.iterationInfo.iterationNumber', defaultSortOrder: 'asc' },
 	    { name: '', displayComponent: () => lockedIcon(), dataField: 'attributes.workInfo.locked', defaultSortOrder: 'asc' },
 	    { name: 'Description', dataField: 'masterAttributes.description', defaultSortOrder: 'asc' },
-	    { name: '', displayComponent: (v) => moreActions(v) },
+	    { name: '', displayComponent: (v) => moreActions(v)},
 	],
-} ;
+}
 /**
  * Generates href with link to details view
  */
@@ -94,7 +94,7 @@ class Lifecycles extends Component {
 	}
 	
 	componentDidMount(){
-		containerService.getAllLifecycles(0, 6, false)
+		containerService.getAllLifecycles(0, 4, false)
         .then(json => {
         	console.log(json);
             return json;

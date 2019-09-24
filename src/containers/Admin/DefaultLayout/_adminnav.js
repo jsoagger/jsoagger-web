@@ -52,8 +52,20 @@ export default {
     },
     {
       name: 'Members',
-      url: '/admin/p/containerMembers',
-      icon: 'fa fa-users'
+      icon: 'fa fa-users',
+      children: [
+    	  {
+              name: 'Manage',
+              url: '/admin/p/manageMembers',
+              icon: 'fa fa-users'
+          },
+          {
+              name: 'Create',
+              url: '/admin/p/containerMembers/register/cu',
+              icon: 'fa fa-plus'
+          },
+         
+        ],
     },
     {
 	    title: true,
@@ -86,17 +98,17 @@ export default {
       url: '/admin/p/enumerations',
     },
     {
-      name: 'Git Source',
-      url: 'https://coreui.io/react/',
-      icon: 'icon-screen-desktop',
+      name: 'GITHUB',
+      url: 'https://github.com/jsoagger',
+//      icon: 'icon-github',
       class: 'mt-auto',
       variant: 'success',
       attributes: { target: '_blank', rel: "noopener" },
     },
     {
-      name: 'Documentation',
-      url: 'https://coreui.io/pro/react/',
-      icon: 'icon-screen-smartphone',
+      name: 'JSOAGGER',
+      url: 'http://www.jsoagger.tech',      
+//      icon: 'icon-document',
       variant: 'danger',
       attributes: { target: '_blank', rel: "noopener" },
     },

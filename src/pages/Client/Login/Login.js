@@ -95,7 +95,6 @@ class Login extends Component {
      * Logout application
      */
     logout(){
-    	// dispatch core redux events
     	this.props.onlogout();
     	this.props.setUserWorkingContainer();
     	this.props.setApplicationContainer();
@@ -125,10 +124,10 @@ class Login extends Component {
      */
     handleLoginSuccess(json) {
     	var authPayload = {}, containerPayload = {}, appContainerPayload = {};
-
-    	// set sessionId in order to activa client routes
+    	var accountP = JSON.parse(json.data.links.account)
+    	
+    	// set sessionId in order to activate client routes
     	localStorage.setItem('session_id', json.metaData.session_id);
-    	localStorage.setItem('is_administrator', true);
     	
         createSessionCookie(json.metaData.session_id);
         authPayload['session_id'] = json.metaData.session_id;
@@ -142,10 +141,11 @@ class Login extends Component {
     	authPayload['account'] = json.data.links.account;
         authPayload['details'] = json.data.links.user;
         this.props.onlogin(authPayload);
+        
+        // TODO, treat permissions
+        localStorage.setItem('is_administrator', accountP.nickName === 'epadmin');
 
         // working container
-        //console.debug(json.data.links.container);
-        // JSON.stringify(payload)
         const workingContainer = json.data.links.container;
         containerPayload['workingContainer'] = workingContainer;
         this.props.setUserWorkingContainer(workingContainer);
@@ -196,7 +196,7 @@ class Login extends Component {
      */
     lostPass(e){
     	e.preventDefault()
-    	window.location.href = '#/lostPass';
+    	window.location.href = '#/a/lostPass';
     }
     /**
      * Render the view
@@ -240,7 +240,7 @@ class Login extends Component {
 	                                    <div className="flex-row align-items-center">
 	                                        <p className="h3">Welcome to JSOAGGER</p>
 	                                    </div>
-	                                    <Link to="/register/an">
+	                                    <Link to="/a/register/an">
 	                                      <Button color="primary" className="mt-3" active tabIndex={-1}>Register Now!</Button>
 	                                    </Link>
 	                                  </div>

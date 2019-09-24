@@ -1,5 +1,15 @@
 import React, { Component } from 'react';
-import { TabPane, TabContent, NavItem, NavLink, Nav, ListGroup, ListGroupItem, Button, Card, CardBody, Col, Row} from 'reactstrap';
+import { TabPane, TabContent, NavItem, NavLink,
+	Nav, 
+	ListGroup, 
+	ListGroupItem, 
+	Button, 
+	Card, 
+	CardBody, 
+	Col, 
+	Row,
+	CardImg
+} from 'reactstrap';
 import classnames from 'classnames';
 import { 
 	AttributeListGroup, 
@@ -8,10 +18,13 @@ import {
 	UpdatePassword,
 	LockUser,
 	UnLockUser,
+	DataTable
 } from '_components';
 import { connect } from 'react-redux';
 import { accountService } from '_services/account.services.js';
 import { toast } from 'react-toastify';
+import { commons } from '../../../../_helpers/commons.js';
+import ContainersMembership  from 'pages/Admin/Container/ContainersMembership.js'
 /**
  * People details page
  */
@@ -89,62 +102,105 @@ class PeopleDetails extends Component {
     tabsConfigs(){
         const tabsConfig = {
             tabItems: [
-                {id: '1', title: 'Overview', tabContent: () => this.overviewTabContent()},
-                {id: '2', title: 'Contacts', tabContent: () => this.contactTabContent()},
+                {id: '1', title: 'Overview', tabContent: () => this.overviewTabContent(), visible: () => true},
+                {id: '2', title: 'Contacts', tabContent: () => this.contactTabContent(), visible: () => true},
+                {id: '3', title: 'Containers', tabContent: () => this.containerAccessTabContent(), 
+                	visible: () => this.containerAccessTabContentVisible()},
             ],
         }
         return tabsConfig
-    };
+    }
+    
+    containerAccessTabContentVisible(){
+    	return this.state.isCurrentAccountOwner || commons.isAdministrator()
+    }
 
+    containerAccessTabContent(){
+    	const accessTableConfig = {
+    		  tableSize: 'sm',
+    			paginationSize: 'sm',
+    			emptyMessageTitle: 'No container access',
+    			emptyMessageDescription: 'User does not have access to any container.',
+    			columnsConfig: [
+    		        { name: 'Name', dataField: 'attributes.name'},
+    		        { name: 'Path', dataField: 'attributes.path'}
+    			],
+    	}
+    	
+    	// if admin navigate through containers
+    	// if user, just show access
+    	if(commons.isAdministrator()){
+    		return <TabPane tabId="3" className="no-padding">
+	    		<ContainersMembership accountId={this.state.accountId} />
+		    </TabPane>
+    	}
+    	else {
+    		return (
+				 <DataTable items={JSON.stringify(this.state.containerMembership)} 
+	         		metaData={JSON.stringify(this.state.containerMembershipMetaData)} 
+	             	tableConfig={accessTableConfig} 
+	            	paginate="false"/>
+    		)
+    	}
+    }
+    
+    emptyContainerTableActions(){
+    	return(
+    		<div>
+    			<Button>ADD MEMBERSHIPS</Button>
+    		</div>
+    	)
+    }
+    
     contactTabContent(){
+    	var canEdit = this.state.isCurrentAccountOwner || commons.isAdministrator()
         return <TabPane tabId="2"> 
             <Row>
-                <Col md="12">
-                    <Contactable businessId={this.state.userProfile.id}/>
+                <Col xs="12" sm="12" md="12" lg="10" xl="12">
+                    <Contactable businessId={this.state.userProfile.id} canEdit={canEdit}/>
                 </Col>
             </Row>
         </TabPane>    
 	}
 	
-
-	refreshUserAccount(){
-	}
-
-	refreshUserProfile(){
-	}
-	
 	/**
 	 * Called by REDUX
 	 */
-	 async componentWillReceiveProps(props) {
-		var accountId = this.state.accountId
-		await accountService.accountDetails(accountId)
-		.then(response => {
-			this.setState({
-				loadDataError: false,
-				userAccount: response.data.links.account
-			});
-		})
-		.catch(error => {
-			console.error(error)
-			this.setState({
-        		loadDataError: true
-        	})
-        })
+	componentWillReceiveProps(props) {
+		this.loadAllDatas()
 	}
-	
 	/**
 	 * Called without REDUX
 	 */
 	componentDidMount() {
+		this.loadAllDatas()
+    }
+	
+	loadAllDatas(){
 		var accountId = this.state.accountId
 		accountService.accountDetails(accountId)
 		.then(response => {
+			var currentAccountOwner = commons.isAccountOwner(response.data.links.account)
+			let location = response.data.attributes.lastName + ' ' + response.data.attributes.firstName 
+			document.getElementsByClassName('active breadcrumb-item')[0].innerHTML = location
 			this.setState({
 				loadDataError: false,
 				userProfile:  response.data.attributes,
-				userAccount: response.data.links.account
+				userAccount: response.data.links.account,
+				isCurrentAccountOwner: currentAccountOwner
 			});
+			return response;
+		})
+		.then(response => {
+			var currentAccountId = response.data.links.account.id
+			accountService
+			.containersMembership(currentAccountId)
+			.then(response => {
+				this.setState({
+					containerMembership: response.data,
+					containerMembershipMetaData: response.metaData,
+				})
+			})
 		})
 		.catch(error => {
 			console.error(error)
@@ -152,23 +208,26 @@ class PeopleDetails extends Component {
         		loadDataError: true
         	})
         })
-    }
+	}
     
     overviewTabContent() {
+    	var canEdit = this.state.isCurrentAccountOwner || commons.isAdministrator()
         return ( 
 			<TabPane tabId="1"> 
 				<Row>
-					<Col md="12" xl="10">
+					<Col xs="12" sm="12" md="12" lg="10" xl="12">
 						<div className="sidebar-nav-fixed affix">
 							<AttributeListGroup 
 								attributesListConfig={this.profileAttributesList()} 
 								data={this.state.userProfile}
+								canEdit={canEdit}
 								standardFooterActions="true"
 								displayHeader={true}/>
 
 							<AttributeListGroup 
 								attributesListConfig={this.accountAttributesList()} 
 								data={this.state.userAccount}
+								canEdit={canEdit}
 								displayHeader={true}/>   
 						</div>
 					</Col>
@@ -221,56 +280,65 @@ class PeopleDetails extends Component {
 
 	render() {
 		if(this.state.loadDataError === true){
-			return (
-				this.error()
-			)
+			return (this.error())
 		}
 
 		if(this.state.userProfile === null || this.state.userAccount === null){
-			return (
-				this.loading()
-			)
+			return (this.loading())
 		}
 		
 		var navTabItems = [], navTabContents = [], ritm = [];
 		this.tabsConfigs().tabItems.forEach(tabItem => {
 			const id = tabItem.id;
-			navTabItems.push( 
-				<NavItem>
-					<NavLink className={classnames({ active: this.state.activeTab === id.toString()})}
-						onClick={() => { this.toggle(id.toString()); }}>
-						{tabItem.title}</NavLink>
-				</NavItem>
-			)
+			if(tabItem.visible() ===  true) {
+				navTabItems.push( 
+					<NavItem>
+						<NavLink className={classnames({ active: this.state.activeTab === id.toString()})}
+							onClick={() => { this.toggle(id.toString()); }}>
+							{tabItem.title}</NavLink>
+					</NavItem>
+				)
+			}
 		});
 
 		this.tabsConfigs().tabItems.forEach(tabItem => {
 			const id = tabItem.id;
-			navTabContents.push( <TabPane tabId={id.toString()}>
-				{tabItem.tabContent(ritm)}
-			</TabPane>);
+			if(tabItem.visible() ===  true) {
+				navTabContents.push( <TabPane tabId={id.toString()}>
+					{tabItem.tabContent(ritm)}
+				</TabPane>);
+			}
 		});
 		
-		const actions =[];
-		actions.push(
-			<ListGroupItem action>
-				<ResetPassword accountId={this.state.userAccount.id}/>
-			</ListGroupItem>
-		)
-		actions.push(<ListGroupItem action>
-				<UpdatePassword accountId={this.state.userAccount.id}/>
-			</ListGroupItem>
-		)
-		
-		if(!this.isLocked()){
-			actions.push(<ListGroupItem action>
-				<LockUser accountId={this.state.userAccount.id}/>
-			</ListGroupItem>)
+		const actions = [],
+			  isAdmin = commons.isAdministrator()
+			 
+		if(isAdmin){
+			actions.push(
+				<ListGroupItem action>
+					<ResetPassword accountId={this.state.userAccount.id}/>
+				</ListGroupItem>
+			)
 		}
-		else {
+		
+		if(this.state.isCurrentAccountOwner) {
 			actions.push(<ListGroupItem action>
-				<UnLockUser accountId={this.state.userAccount.id}/>
-			</ListGroupItem>)
+					<UpdatePassword accountId={this.state.userAccount.id}/>
+				</ListGroupItem>
+			)
+		}
+		
+		if(isAdmin){
+			if(!this.isLocked()){
+				actions.push(<ListGroupItem action>
+					<LockUser accountId={this.state.userAccount.id}/>
+				</ListGroupItem>)
+			}
+			else {
+				actions.push(<ListGroupItem action>
+					<UnLockUser accountId={this.state.userAccount.id}/>
+				</ListGroupItem>)
+			}
 		}
 		
 		return (
@@ -280,8 +348,9 @@ class PeopleDetails extends Component {
 						<div className="sidebar-nav-fixed affix">
 							<Row>
 								<Col md="12" lg="10" xl="10">
-								<Summary nickName={this.state.userAccount.nickName}
-										login={this.state.userAccount.login}/>
+								<Summary gender={this.state.userProfile.gender}
+										 nickName={this.state.userAccount.nickName}
+										 login={this.state.userAccount.login}/>
 								</Col>
 							</Row>
 							<Row>
@@ -310,20 +379,34 @@ class PeopleDetails extends Component {
 		);
 	}
 }
-/**
- * 
- */
+					
+
 class Summary extends Component {
-    render(){
+	
+    render() {
+    	var cardImage, gender = this.props.gender ? this.props.gender:"0"
+    		
+    	if(gender === "0"){
+    		cardImage = (
+    			<CardImg  src={'../../assets/img/avatars/1.png'} className="img-profile"/>
+    		)
+    	}
+    	else {
+    		cardImage = (
+    			<CardImg  src={'../../assets/img/avatars/3.png'} className="img-profile"/>
+    		)
+    	}
+    	
 		return (
             <React.Fragment>
-                <Card>
+                <Card className="no-radius">
                     <CardBody>
                         <div className="align-items-center">
-                            <img src={'../../assets/img/avatars/1.png'} className="img-profile" alt="jsoaggeruser" />
+                        {cardImage}
                         </div>
                     </CardBody>
                 </Card>
+                <div className="spacer-20"></div>
                 <Card>
                     <CardBody>
                         <div className="align-items-center">
@@ -338,3 +421,4 @@ class Summary extends Component {
 }
 
 export default connect(mapStateToProps) (PeopleDetails);
+

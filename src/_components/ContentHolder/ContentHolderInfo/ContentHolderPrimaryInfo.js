@@ -37,9 +37,22 @@ class ContentHolderPrimaryInfo extends Component {
     		})
     	})
     }
+    
+    componentWillReceiveProps(nextProps){
+    	let contentHolderId = nextProps.contentHolderId
+    	contentHolderService.contentInfos(contentHolderId, 'primary')
+    	.then(ci => {
+    		this.setState({
+    			primaryContent: ci.data
+    		})
+    	}).catch(error => {
+    		this.setState({
+    			primaryContent: null
+    		})
+        });
+    }
 
 	render() {
-		console.log('ContentHolderPrimaryInfo : ' + JSON.stringify(this.props))
 		var header  = ""
 		if(this.props.displayHeader){
 			header = (
@@ -67,14 +80,13 @@ class ContentHolderPrimaryInfo extends Component {
 	    else {
 	    	let item = this.state.primaryContent[0]
 	    	if(item && item.attributes){
-	    		
 	    		let displayContentSize = this.props.displayContentSize ? this.props.displayContentSize : false
 	    		if(displayContentSize){
 	    			return (
 			    			<div>
 				    			<div>{header}</div>
-				    			<table>
-				    				<tr>
+				    			<table className="fullWidth">
+				    				<tr className="fullWidth">
 				    					<td width="30%">{item.attributes.contentFormat.mimeType} </td>
 				    					<td width="20%">{item.attributes.contentSize} octet(s)</td>
 				    					<td width="30%"><ContentHolderPrimaryAction contentHolderId={this.props.contentHolderId}/></td>
@@ -87,10 +99,11 @@ class ContentHolderPrimaryInfo extends Component {
 	    			return (
 			    			<div>
 				    			<div>{header}</div>
-				    			<table>
-				    				<tr>
-				    					<td width="30%">{item.attributes.contentFormat.mimeType} </td>
-				    					<td width="30%"><ContentHolderPrimaryAction contentHolderId={this.props.contentHolderId}/></td>
+				    			<table className="fullWidth">
+				    				<tr className="fullWidth">
+				    					<td width="60%">{this.props.contentHolderFileName}</td>
+				    					<td width="20%">{item.attributes.contentFormat.mimeType}</td>
+				    					<td width="20%"><ContentHolderPrimaryAction contentHolderId={this.props.contentHolderId}/></td>
 				    				</tr>
 				    			</table>
 			    			</div>

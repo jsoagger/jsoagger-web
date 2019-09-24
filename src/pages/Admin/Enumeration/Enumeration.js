@@ -47,6 +47,9 @@ class Enumeration extends Component {
 		const id = this.props.match.params.id
 		listValuesService.details(id).
 		then(e => {
+			let location = e.data.attributes.value
+			document.getElementsByClassName('active breadcrumb-item')[0].innerHTML = location
+			
 			this.setState({
 				item: e.data
 			})
@@ -56,6 +59,8 @@ class Enumeration extends Component {
 	render() {
 		const attributesList = {
 		    title: 'Summary',
+			tableSize: 'sm',
+			paginationSize: 'sm',
 		    icon: 'fa fa-info float-right',
 		    attributes: [
 		    	{name: 'Displayed Value', dataField: 'attributes.value', type:'string'},
@@ -75,11 +80,9 @@ class Enumeration extends Component {
 						<Col xs="12" sm="12" md="10" lg="10" xl="8">
 							<Row>
 								<Col xs="12" md="12" lg="12" xl="12">
-		                            <Card>
-		                            	<CardBody>
-		                            		<h3 className="float-left, jsoa-table-title">{item.attributes.value} </h3>
-		                                </CardBody>
-		                            </Card>
+									<div className="jsoagger-table-header">
+	                            		<h3 className="float-left, jsoa-table-title">{item.attributes.value} </h3>
+	                                </div>
 		                        </Col>
 							</Row>
 							<Row>

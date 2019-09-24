@@ -4,6 +4,7 @@ import * as router from 'react-router-dom';
 import { Container } from 'reactstrap';
 import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
+import { commons } from '../../../_helpers/commons.js';
 
 import {
   AppFooter,
@@ -45,20 +46,21 @@ class DefaultLayout extends Component {
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
   render() {
-	  var containerPath
+	  var containerPath, json, wc
 	  
 	  if(this.props.userWorkingContainer  && this.props.userWorkingContainer.currentContainer){
-      	var json  = JSON.parse(this.props.userWorkingContainer.currentContainer)
+      	json  = JSON.parse(this.props.userWorkingContainer.currentContainer)
       	containerPath = json.path
       }
       else {
-    	  var json = localStorage.getItem('workingContainer')
-		  var wc = JSON.parse(json)
+    	  json = localStorage.getItem('workingContainer')
+		  wc = JSON.parse(json)
     	  containerPath = wc.path
       }
 	  
 	  var isadmin = containerPath === '/Application', 
-	  isunaffiliated = containerPath === '/Application/Unaffiliated'
+	  isunaffiliated = containerPath === '/Application/Unaffiliated',
+	  isAdministrator = commons.isAdministrator()
 	  
 	  var navigation
 	  if(isunaffiliated){
@@ -95,34 +97,34 @@ class DefaultLayout extends Component {
             <AppBreadcrumb appRoutes={routes} router={router}/>
             <Container fluid>
               <Suspense fallback={this.loading()}>
-              <Switch>
-              {routes.map((route, idx) => {
-            	  return localStorage.getItem('is_administrator') ?
-	                  route.component ? (
-	                      <Route
-	                        key={route.key ? route.key : idx}
-	                        path={route.path}
-	                        exact={route.exact}
-	                        name={route.name}
-	                        render={props => (
-	                          <route.component {...props} />
-	                        )} />
-	                    ) : (<Route
-		                        key={idx}
-		                        path={route.path}
-		                        exact={route.exact}
-		                        name={route.name}
-		                        render={props => (
-		                          <Page404 {...props} />
-		                        )} 
-	                         />)
-	                    : <Redirect to={{ pathname: '/c/login', state: { from: route.path } }} />
-              	})
-              }
-            </Switch>
+	              <Switch>
+	              {
+	            	  routes.map((route, idx) => {
+	            		  if(isAdministrator){
+	            			  return <Route
+			                        key={route.key ? route.key : idx}
+			                        path={route.path}
+			                        exact={route.exact}
+			                        name={route.name}
+			                        render={props => (
+			                          <route.component {...props} />			
+		                        )} />
+	            		  }
+	            		  else {
+	            			  var isLogedIn = true
+	            			  if(isLogedIn){
+	            				  return <Redirect to={{ pathname: '/c/404', state: { from: route.path } }} />
+	            			  }
+	            			  
+	            			  return <Redirect to={{ pathname: '/c/login', state: { from: route.path } }} /> 
+	            		  }
+	              	})
+	              }
+	              </Switch>
               </Suspense>
             </Container>
           </main>
+
         </div>
 
         <AppFooter>

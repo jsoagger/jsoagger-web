@@ -14,10 +14,7 @@ import {
 	Row 
 } 
 from 'reactstrap';
-import { 
-	AttributeListGroup, 
-} 
-from '_components';
+import { AttributeListGroup} from '_components';
 import logo from '../../../../assets/img/brand/logo.png'
 import { accountService } from '_services/account.services.js'
 import { commons } from '../../../../_helpers/commons.js';
@@ -33,7 +30,8 @@ class PeopleRegister extends Component {
 		super(props)
 		this.state = {
 			formData: {
-				'container': commons.getCurrentContainer(),
+				//'container': commons.getCurrentContainer(),
+				'container': 'MTppby5naXRodWIuanNvYWdnZXIuY29yZS5tb2RlbC5hcGkuY29tcG9zaXRlLkFwcGxpY2F0aW9uQ29udGFpbmVy',
 				'people.type': 'io.github.jsoagger.people.Party/Person',
 				'people.withAccount': true,
 				'account.password': '',
@@ -107,7 +105,7 @@ class PeopleRegister extends Component {
 			addHeaderMargin: true,
 			onSubmit: (formData) => this.registerUser(formData),
             attributes: [
-                {name: 'Gender', dataField: 'gender', type:'string'},
+                {name: 'Gender', dataField: 'gender', type:'select', enumProvider: () => this.gendersEnums()},
                 {name: 'Lastname', dataField: 'lastName', type:'string'},
                 {name: 'Middlename', dataField: 'middleName', type:'string'},
                 {name: 'Firstname', dataField: 'firstName', type:'string'},
@@ -126,6 +124,10 @@ class PeopleRegister extends Component {
         
         return profileAttributesList;
     }
+	
+	gendersEnums(){
+		return genderEnum;
+	}
 	
 	componentDidMount(){
 		// 2 sources for registering:
@@ -148,23 +150,20 @@ class PeopleRegister extends Component {
 		   
 	   let errors = []
 	   if(this.state.errors.length > 0) {
-		   errors.push(<p><strong>Please correct following errors:&nbsp;</strong></p>)
-		   errors.push(<hr/>)
 		   this.state.errors.map(error => {
 			   errors.push(<p>{error}</p>)
 		   })
-		   errors.push(<hr/>)
 	   }
 	   
 	   let header = ''
-	   if(this.props.source === 'an'){
+	   if(this.state.source === 'an'){
 		   header = (
 			   <Row className="justify-content-center">
-		         	<Col md="7" lg="7" xl="7" xs="12">
-		         	 	 <Card className="mx-4">
-		         	 		<CardBody className="p-4">
+			   		<Col xs="12" md="12" lg="10" xl="8">
+		         	 	 <Card>
+		         	 		<CardBody>
 			            		<div>
-			            			<img src={logo} className="img-avatar" alt="JSOAGGER logo" width="60"/>
+			            			<img src={logo} className="img-logo-s" alt="JSOAGGER logo"/>
 			            			<h1>REGISTER</h1>
 			            			<hr/>
 			            			<h5>Create an account</h5>
@@ -175,14 +174,13 @@ class PeopleRegister extends Component {
 	          </Row>
 		   )
 	   }
-	   
 	   return (
-	        <div>
+	        <div className="justify-content-center">
 	      		 {header}
 		          <Row className="justify-content-center">
-			          <Col md="7" lg="7" xl="7" xs="12">
-			              <Card className="mx-4">
-			              	<CardBody className="p-4">
+		          	<Col xs="12" md="12" lg="8" xl="8">
+			              <Card>
+			              	<CardBody>
 			              		<div id="form-errors-section" className="jsoagger-form-error">
 			              			{errors}
 			              		</div>
@@ -196,11 +194,13 @@ class PeopleRegister extends Component {
 			            </Col>
 		          </Row>
 	      </div>
-	   );
+	   )
   }
 }
 
-export default PeopleRegister;
 
+const genderEnum = [{'key':'0', 'value':'M'}, {'key':'1', 'value':'F'}]
+
+export default PeopleRegister;
 
 

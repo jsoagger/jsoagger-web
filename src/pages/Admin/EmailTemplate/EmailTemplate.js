@@ -117,6 +117,8 @@ class EmailTemplateDetails extends Component {
 		enTemplateService
 		.getById(templateId)
 		.then(json => {
+			let location = json.data.attributes.displayName
+			document.getElementsByClassName('active breadcrumb-item')[0].innerHTML = location
             this.setState({
                 item: json, 
                 id: templateId});
@@ -146,11 +148,9 @@ class EmailTemplateDetails extends Component {
 	                    	<div className="flex-row align-items-center">
 	                            <Row>
 	                            	<Col xs="12" md="12" lg="12" xl="12">
-	                                    <Card>
-	                                        <CardBody className="jsoagger-card-title">
+	                            		<div className="jsoagger-table-header">
 	                                            <h3 className="float-left, jsoa-table-title">{d.attributes.displayName} </h3>
-	                                        </CardBody>
-	                                    </Card>
+	                                    </div>
 	                                </Col>
 	                            </Row>
 	                            <Row>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import JSoagerLogo from '../../../_components/JSoagerLogo';
 import { connect } from 'react-redux';
 import { listValuesService } from '_services/listvalues.services.js';
-import {Badge, Col, Nav, NavItem, NavLink, Row, TabContent, TabPane, ListGroup, ListGroupItem} from 'reactstrap';
+import {Badge, Col, Nav, NavItem, NavLink, Row, TabContent, TabPane, ListGroup, ListGroupItem, Jumbotron, Card, CardBody} from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { DataTable, ContextualMenu, ListGroupDataTable } from '../../../_components';
 import * as actions from '_actions/actions.js';
@@ -83,37 +83,70 @@ class Enumerations extends Component {
              );
          });
          
-         var en, fr
+         var en, fr, noSelection, hasEnum = false
          if(this.state.en && this.state.en.length > 0){
-        	en = ( <DataTable items={JSON.stringify(this.state.en)}
-        			tableTitle = 'English'
-        			totalElements='2'
-        			paginate={false}
-					tableConfig={tableConfig}/>
-			)
+        	hasEnum = true
+        	en = ( 
+        		<Card className="no-radius">
+        			<CardBody>
+	        			<DataTable items={JSON.stringify(this.state.en)}
+	        			tableTitle = 'English'
+	        			totalElements='2'
+	        			paginate={false}
+						tableConfig={tableConfig}/>
+	        		</CardBody>
+	            </Card>
+        	)
          }
          
          if(this.state.fr && this.state.fr.length > 0){
-        	 fr = ( <DataTable items={JSON.stringify(this.state.fr)}
-        	 	tableTitle = 'Français'
-				totalElements='2'
-				paginate={false}
-				tableConfig={tableConfig}/>
+        	 hasEnum = true
+        	 fr = (
+        		<Card className="no-radius">
+        			<CardBody>
+        			 	<DataTable items={JSON.stringify(this.state.fr)}
+			        	 	tableTitle = 'Français'
+							totalElements='2'
+							paginate={false}
+							tableConfig={tableConfig}/>
+        			 </CardBody>
+        		</Card>
         	 ) 
+         }
+         
+         if(!hasEnum){
+	         noSelection  = (
+	        	<Card className="no-radius">
+	                 <CardBody>
+	                     <Jumbotron className="white-background">
+	                     	<div className="text-center">
+	                             <h3>No item selected</h3>
+	                             <p className='lead'>Please select an item</p>
+	                         </div>    
+	                     </Jumbotron>
+	                 </CardBody>
+	             </Card>
+	         )
          }
          
 	    return (
     		 <div className="flex-row align-items-center">
                 <Row>
-                    <Col md="3">
+                	<Col xs="12" sm="12" md="12" lg="4" xl="4">
                         <div class="sidebar-nav-fixed affix jsoagger-left-pane jsoagger-scroll-y">
                             <ListGroup>{navs}</ListGroup>
                         </div>
                     </Col>
-                    <Col md="8">
+                    <Col xs="12" sm="12" md="12" lg="8" xl="8">
 	                    <div>
 	                    	<Row>
+	                    		<Col md="12">{noSelection}</Col>
+	                    	</Row>
+	                    	<Row>
 	                    		<Col md="12">{en}</Col>
+	                    	</Row>
+	                    	<Row>
+	                    		<Col md="12"><hr/></Col>
 	                    	</Row>
 	                    	<Row>
 		                    	<Col md="12">{fr}</Col>
@@ -127,8 +160,8 @@ class Enumerations extends Component {
 }
 
 const tableConfig = {
-		tableSize: 'md',
-		paginationSize: 'md',
+		tableSize: 'sm',
+		paginationSize: 'sm',
 		columnsConfig: [
 			{ name: 'Displayed value',  displayComponent: (v, i) => LinkTo(v, i)},
 			{ name: 'Saved value', dataField: 'attributes.savedValue', },

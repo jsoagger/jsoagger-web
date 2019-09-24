@@ -2,9 +2,10 @@ import React, { Component, Suspense } from 'react';
 
 import { Redirect, Route, Switch } from 'react-router-dom';
 import * as router from 'react-router-dom';
-import { Container, Row, Col } from 'reactstrap';
+import { Container, Row, Col, CardText, Button } from 'reactstrap';
 import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
+import SearchMembersResult from '../../../pages/Admin/ContainerMember/SearchMembersResult.js'
 
 import {
   AppAside,
@@ -21,6 +22,7 @@ import {
 
 // sidebar nav config
 import navigation from './_nav';
+import * as actions from '../../../_actions/actions.js';
 
 // routes config
 import routes from '../../../routes/clientRoutes';
@@ -33,6 +35,7 @@ const Page404 = React.lazy(() => import('../../../pages/Common/Page404/Page404')
 
 const mapStateToProps = store => ({
 	userWorkingContainer: store.currentContainers,
+	searchResults: store.headerSearchComp.searchResults,
 });
 
 
@@ -40,16 +43,61 @@ const mapStateToProps = store => ({
  * Client default layout
  */
 class DefaultLayout extends Component {
+	
+	constructor(props){
+		super(props)
+	}
 
-  loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
+   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
-  signOut(e) {
-    e.preventDefault()
-    this.props.history.push('/c/login');
-  }
+   signOut(e) {
+	   e.preventDefault()
+	   this.props.history.push('/c/login');
+   }
   
   render() {
 	  
+	let mainContent = (
+		<div id="jsoagger-main-content">
+		     <Row>
+            	<Col md="2"/>
+            	<Col md="8">
+                	<div className="w-spacer"/>
+                	<div className="clearfix jsoagger-bread">
+	                 	<Suspense fallback={this.loading()}>
+			                 <Switch>
+			                   {routes.map((route, idx) => {
+			                 	  return localStorage.getItem('session_id') ?
+			 		                  route.component ? (
+			 			                      <Route
+			 			                        key={idx}
+			 			                        path={route.path}
+			 			                        exact={route.exact}
+			 			                        name={route.name}
+			 			                        render={props => (
+			 			                          <route.component {...props} />
+			 			                        )} />
+			 			                    ) : (<Route
+			 				                        key={idx}
+			 				                        path={route.path}
+			 				                        exact={route.exact}
+			 				                        name={route.name}
+			 				                        render={props => (
+			 				                          <Page404 {...props} />
+			 				                        )} 
+			 			                         />)
+			 			                    : <Redirect to={{ pathname: '/c/login', state: { from: route.path } }} />
+			                   	})
+			                   }
+			                 </Switch>
+			            </Suspense>
+		            </div>
+		         </Col>
+		         <Col md="2"/>
+		     </Row>
+	     </div>
+	)
+	
     return (
       <div className="app">
         <AppHeader fixed>
@@ -72,43 +120,10 @@ class DefaultLayout extends Component {
 		                <Col md="2"/>
 		            </Row>
 			     </div>
-			     <div className="spacer-20"/>
-		     <Row>
-	             <Col md="2"/>
-	             <Col md="8">
-	                 <div className="w-spacer"/>
-	                 <div className="clearfix jsoagger-bread">
-	                 <Suspense fallback={this.loading()}>
-	                 <Switch>
-	                   {routes.map((route, idx) => {
-	                 	  return localStorage.getItem('session_id') ?
-	 		                  route.component ? (
-	 			                      <Route
-	 			                        key={idx}
-	 			                        path={route.path}
-	 			                        exact={route.exact}
-	 			                        name={route.name}
-	 			                        render={props => (
-	 			                          <route.component {...props} />
-	 			                        )} />
-	 			                    ) : (<Route
-	 				                        key={idx}
-	 				                        path={route.path}
-	 				                        exact={route.exact}
-	 				                        name={route.name}
-	 				                        render={props => (
-	 				                          <Page404 {...props} />
-	 				                        )} 
-	 			                         />)
-	 			                    : <Redirect to={{ pathname: '/c/login', state: { from: route.path } }} />
-	                   	})
-	                   }
-	                 </Switch>
-	               </Suspense>
-	                 </div>
-	             </Col>
-	             <Col md="2"/>
-	         </Row>
+			     <div className="spacer-20" />
+			     
+			     {mainContent}
+			     
             </Container>
           </main>
 
@@ -131,4 +146,5 @@ class DefaultLayout extends Component {
   }
 }
 
-export default DefaultLayout;
+export default connect(mapStateToProps) (DefaultLayout);
+

@@ -52,7 +52,7 @@ export  {
     GenderViewer,
     ActivatePassword,
     WorkableAction,
-    RevControlledAction
+    RevControlledAction,
 }
 
 

@@ -198,28 +198,35 @@ class AttributeArrayGroup extends Component {
 		if(this.isEditing()){
 			return <React.Fragment>
 				<Row>
-					<Col lg="7">
-					</Col>
+					<Col lg="7"></Col>
 					<Col lg="5">
 						<ButtonGroup>
-						<Button  color="primary" size="md" onClick={(e) => this.save(e)}>SAVE</Button>
-						<Button  color="primary" size="md" onClick={(e) => this.cancel(e)}>CANCEL</Button>
-						<Button color="primary" size="md" onClick={(e) => this.add(e)}>ADD</Button>
+							<Button  color="primary" size="md" onClick={(e) => this.save(e)}>SAVE</Button>
+							<Button  color="primary" size="md" onClick={(e) => this.cancel(e)}>CANCEL</Button>
+							<Button size="md" color="light" onClick={(e) => this.add(e)}>ADD</Button>
 						</ButtonGroup>
 					</Col>
 				</Row>
 	        </React.Fragment>
 		}
 		else {
-			return <React.Fragment>
-				<Row>
-					<Col lg="8">
-					</Col>
-					<Col lg="4">
-						<Button block color="primary" size="md" onClick={(e) => this.edit(e)}><i className="fa fa-pencil"></i> EDIT</Button>
-					</Col>
-				</Row>
-	        </React.Fragment>
+			if(this.props.canEdit === true){
+				return (
+						<React.Fragment>
+							<Row>
+								<Col lg="8"></Col>
+								<Col lg="4">
+									<ButtonGroup>					
+										<Button size="md" color="light" onClick={(e) => this.edit(e)}><i className="fa fa-pencil"></i> EDIT</Button>
+									</ButtonGroup>						
+								</Col>
+							</Row>
+				        </React.Fragment>
+				 )
+			}
+			else {
+				return ''
+			}
 		}
 	}
 

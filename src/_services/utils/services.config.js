@@ -1,6 +1,6 @@
 import {sessionId}  from '../../_helpers/auth-header';
 
-export const rootContainerId = 'MTpjb20ubmV4aXRpYS5lbWFnaW5wbGF0Zm9ybS5jb3JlLm1vZGVsLmFwaS5jb21wb3NpdGUuQXBwbGljYXRpb25Db250YWluZXI';
+export const rootContainerId = 'MTppby5naXRodWIuanNvYWdnZXIuY29yZS5tb2RlbC5hcGkuY29tcG9zaXRlLkFwcGxpY2F0aW9uQ29udGFpbmVy';
 
 /*------------------------------------------------------------------------------------------------
  *
@@ -158,6 +158,31 @@ export const  _doPut = async function(url, data) {
 	else {
 		return fetch(finalurl, {
 	        method: "PUT",
+	        headers: {
+	        	'Content-Type': 'application/json',
+	            'Accept': 'application/json',
+	        },
+	    });
+	}
+}
+export const  _doDelete = async function(url, data) {
+	let sid = JSON.stringify("sid=" + sessionId());
+	let finalurl = url.replace(":containerId", getWorkingCurrentContainerId());
+	if(data){
+	    return fetch(finalurl, {
+	        method: "DELETE",
+	        headers: {
+	        	'Content-Type': 'application/json',
+	            'Accept': 'application/json',
+	        },
+	        body: JSON.stringify(data),
+	    });
+	}
+	else {
+		console.log('>>> : ' + url)
+		console.log('>>> : ' + url)
+		return fetch(url, {
+	        method: "DELETE",
 	        headers: {
 	        	'Content-Type': 'application/json',
 	            'Accept': 'application/json',

@@ -23,22 +23,22 @@ export default {
         {
             displayName: 'Product instance',
             businessClass: 'io.github.jsoagger.core.model.shop.ProductInstance',
-            rootType: 'com.nexitia.product.ProductInstance'
+            rootType: 'io.github.jsoagger.product.ProductInstance'
         },
         {
             displayName: 'Category',
             businessClass: 'io.github.jsoagger.core.model.api.classifiable.ObjectCategory',
-            rootType: 'com.nexitia.classification.Category'
+            rootType: 'io.github.jsoagger.classification.Category'
         },
         {
             displayName: 'Contact mechanism',
             businessClass: 'io.github.jsoagger.core.model.api.contact.ContactMechanism',
-            rootType: 'com.nexitia.contact.ContactMechanism'
+            rootType: 'io.github.jsoagger.contact.ContactMechanism'
         },
         {
             displayName: 'Product catalog',
             businessClass: 'io.github.jsoagger.core.model.shop.ProductCatalog',
-            rootType: 'com.nexitia.catalog.ProductCatalog'
+            rootType: 'io.github.jsoagger.Catalog'
         },
         {
             displayName: 'Party',

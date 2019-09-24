@@ -120,6 +120,9 @@ class LifecycleDetails extends Component {
 		const d = lifecycleService
 		.details(lifecycleId)
 		.then(json => {
+			let location = json.data.masterAttributes.name
+			document.getElementsByClassName('active breadcrumb-item')[0].innerHTML = location
+			
 			this.setState({
 				item: json, 
 				wc: json.data.attributes.workInfo.isWorkingCopy,
@@ -151,15 +154,13 @@ class LifecycleDetails extends Component {
 			return (
 				<div className="flex-row align-items-center">
 					<Row>
-						<Col xs="0" sm="0" md="1" lg="1" xl="2"></Col>
-						<Col xs="12" sm="12" md="10" lg="10" xl="8">
+						<Col xs="0" sm="0" md="0" lg="1" xl="2"></Col>
+						<Col xs="12" sm="12" md="12" lg="10" xl="8">
 							<Row>
 								<Col xs="12" md="12" lg="12" xl="12">
-		                            <Card>
-		                            	<CardBody>
-		                            		<h3 className="float-left, jsoa-table-title">{d.masterAttributes.name} </h3>
-		                                </CardBody>
-		                            </Card>
+									<div className="jsoagger-table-header">
+		                            	<h3 className="float-left, jsoa-table-title">{d.masterAttributes.name} </h3>
+		                            </div>
 		                        </Col>
 							</Row>
 							<Row>
@@ -196,7 +197,7 @@ class LifecycleDetails extends Component {
 				                </Col>
 				            </Row>
 			            </Col>
-			            <Col xs="0" sm="0" md="1" lg="1" xl="2"></Col>
+			            <Col xs="0" sm="0" md="0" lg="1" xl="2"></Col>
 		            </Row>
 		        </div>
 	        

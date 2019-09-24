@@ -28,7 +28,7 @@ class AddExistingMember extends Component {
             <div>
                 <SearchMembers {...this.props} 
                 	updateArea='NavigateMembers_searchResults' 
-                	title="Add existing member"
+                	title="Manage members"
                 	renderResult={this.renderResult}/>
                 <div id="NavigateMembers_searchResults">
                 	<AddExistingMemberResult {...this.props}/>

@@ -59,7 +59,7 @@ export const userAccountUpdatePass = (payload) => ({
     payload: payload,
 });
 /**
- * 
+ * Search members components
  */
 export const updateSearchMembersTerm = (payload) => ({
     type: types.SEARCHTERM_UPDATE,
@@ -67,6 +67,17 @@ export const updateSearchMembersTerm = (payload) => ({
 });
 export const updateSearchResults = (payload) => ({
     type: types.SEARCH_RESULTS,
+    payload: payload,
+});
+/**
+ * Search all types from client header
+ */
+export const updateHeaderSearchCompSearchTerm = (payload) => ({
+    type: types.SEARCH_HEADER_COMP_SEARCHTERM_UPDATE,
+    payload: payload,
+});
+export const updateHeaderSearchCompSearchResults = (payload) => ({
+    type: types.SEARCH_HEADER_COMP_SEARCH_RESULTS,
     payload: payload,
 });
 /**

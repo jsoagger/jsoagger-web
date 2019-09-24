@@ -212,14 +212,16 @@ class AttributeArrayObjectGroup extends Component {
 			</React.Fragment>
 		}
 
-		return <React.Fragment>
-			<Row>
-				<Col lg="8"></Col>
-				<Col lg="4">
-					<Button block color="primary" size="md" onClick={(e) => this.add(e)}><i className="fa fa-plus"></i> NEW ITEM</Button>
-				</Col>
-			</Row>
-		</React.Fragment>
+		return (
+			<React.Fragment>
+				<Row>
+					<Col lg="8"></Col>
+					<Col lg="4">
+						<Button block color="primary" size="md" onClick={(e) => this.add(e)}><i className="fa fa-plus"></i> NEW ITEM</Button>
+					</Col>
+				</Row>
+			</React.Fragment>
+		)
 	}
 
 	render() {

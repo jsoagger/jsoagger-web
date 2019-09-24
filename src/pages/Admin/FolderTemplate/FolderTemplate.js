@@ -103,7 +103,8 @@ class FolderTemplateDetails extends Component {
 		folderTemplateService
 		.getById(templateId)
 		.then(json => {
-            console.log(json);
+			let location = json.data.attributes.displayName
+			document.getElementsByClassName('active breadcrumb-item')[0].innerHTML = location
 			this.setState({item: json, id: templateId});
         })
     }
@@ -146,46 +147,44 @@ class FolderTemplateDetails extends Component {
                 const d = commons.toJSONObject(data);
                 return (
                         <Row>
-                        	<Col xs="0" sm="0" md="1" lg="1" xl="2"></Col>
-                        	<Col xs="12" sm="12" md="10" lg="10" xl="8">
-                            <div className="flex-row align-items-center">
-                                <Row>
-                                	<Col xs="12" md="12" lg="12" xl="12">
-                                        <Card>
-                                            <CardBody className="jsoagger-card-title">
-                                                <h3 className="float-left, jsoa-table-title">{d.attributes.displayName} </h3>
-                                            </CardBody>
-                                        </Card>
-                                    </Col>
-                                </Row>
-                                <Row>
-									<Col xs="12" md="12" lg="12" xl="12">
-										<div>
-											<table>
-												<tbody>
-													<tr>
-														<td><ContentHolderAction contentHolderId={data.attributes.id}/></td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-										<div className="spacer-20"></div>
-									</Col>
-								</Row>
-                                <Row>
-                                	<Col xs="12" md="12" lg="12" xl="12">
-                                         <Card>
-                                            <CardBody>
-                                                <AttributeListGroup attributesListConfig={summaryAttributesList} data={d} displayHeader="true" addHeaderMargin="true"/>
-                                                <PersistenceInfo  data={d} {...this.props} displayHeader="true" addHeaderMargin="true"/>
-                                            </CardBody>
-                                         </Card>   
-                                    </Col>
-                                </Row>
-                            </div>
-                        </Col>
-                        <Col xs="0" sm="0" md="1" lg="1" xl="2"></Col>
-		            </Row>
+                        	<Col xs="0" sm="0" md="0" lg="1" xl="2"></Col>
+                        	<Col xs="12" sm="12" md="12" lg="10" xl="8">
+	                            <div className="flex-row align-items-center">
+	                                <Row>
+	                                	<Col xs="12" md="12" lg="12" xl="12">
+	                                		<div className="jsoagger-table-header">
+	                                             <h3 className="float-left, jsoa-table-title">{d.attributes.displayName} </h3>
+	                                        </div>
+	                                    </Col>
+	                                </Row>
+	                                <Row>
+										<Col xs="12" md="12" lg="12" xl="12">
+											<div>
+												<table>
+													<tbody>
+														<tr>
+															<td><ContentHolderAction contentHolderId={data.attributes.id}/></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<div className="spacer-20"></div>
+										</Col>
+									</Row>
+	                                <Row>
+	                                	<Col xs="12" md="12" lg="12" xl="12">
+	                                         <Card>
+	                                            <CardBody>
+	                                                <AttributeListGroup attributesListConfig={summaryAttributesList} data={d} displayHeader="true" addHeaderMargin="true"/>
+	                                                <PersistenceInfo  data={d} {...this.props} displayHeader="true" addHeaderMargin="true"/>
+	                                            </CardBody>
+	                                         </Card>   
+	                                    </Col>
+	                                </Row>
+	                            </div>
+	                        </Col>
+	                        <Col xs="0" sm="0" md="0" lg="1" xl="2"></Col>
+	                     </Row>
                 );
             }
         }

@@ -46,11 +46,13 @@ class LostPassSuccess extends React.Component {
                 <Card>
                 	<CardBody>
                 		<div>
-	            			<img src={logo} className="img-avatar" alt="JSOAGGER logo" width="60"/>
+                			<img src={logo} className="img-logo-s" alt="JSOAGGER logo"/>
+                			<hr/>
+                			
 	            			<h4>An email have been sent to you, please check your inbox</h4>
 	            			<hr/>
 	            			<div className="spacer-20">&nbsp;</div>
-	            			<h1>{this.props.email}</h1>
+	            			<h2>{this.props.email}</h2>
 	            			<div className="spacer-20">&nbsp;</div>
 	            		</div>
                 	</CardBody>

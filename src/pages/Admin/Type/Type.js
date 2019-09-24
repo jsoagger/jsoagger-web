@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { Label, Input, Col, Row, Card,TabContent,TabPane, CardBody, Button, Nav, NavItem, NavLink } from 'reactstrap';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -9,7 +10,7 @@ import ViewDefinition from '_components/ViewDefinition';
 import rootTypeManaged from 'pages/Admin/Type/_typesManaged.js';
 import { businessRulesService } from '_services/business.rule.services.js';
 import { typeService } from '_services/type.services.js';
-
+import { commons } from '../../../_helpers/commons.js';
 import './Types.css';
 
 const summaryAttributesList = {
@@ -39,7 +40,6 @@ const summaryAttributesList = {
         },
     ],
 }
-
 
 const summaryActions = () => {
     return (
@@ -126,8 +126,8 @@ const dynAttributesTabContent = () => {
     return <TabPane tabId="2"> 
         <Row>
             <Col md="12">
-                <Card>
-                    <CardBody>
+                <Card className="no-radius no-border">
+                    <CardBody className="">
                         <Col md="12">
                             <h1>Not implemented</h1>
                             <hr/>
@@ -151,41 +151,16 @@ class TypeDetails extends Component {
         this.state = {
             activeTab: '1',
             tabContent: null,
-            businessRules: {}
         }
 
         this.toggle = this.toggle.bind(this);
-    }
-    
-    businessRulesTabContent(){
-    	var datatable = ''
-    	var item = JSON.parse(this.props.item)
-    	var businessRules = loadBusinessRule(item)
-		if(businessRules){
-			if(businessRules.items && businessRules.items.length > 0) {
-				datatable = (
-					<TabPane tabId="2">
-						<Row>
-			                <Col lg="1"></Col>
-			                <Col lg="10" xl="10">
-			                    <DataTable items={JSON.stringify(businessRules.items)} 
-			                    	metaData={JSON.stringify(businessRules.metaData)} 
-			                        tableConfig={tableConfig} paginate={false}/> 
-			                </Col>
-			                <Col lg="1"></Col>
-			            </Row> 
-		            </TabPane>
-				)	
-			}
-		}
-    	return datatable
     }
     
     tabsConfig() {
     	const tabsConfig = {
 		    tabItems: [
 		        {id: '1', title: 'Overview', tabContent: (item) => summaryTabContent(item)},
-		        {id: '2', title: 'Business rules', tabContent: (item) => this.loadBusinessRule(item)},
+		        {id: '2', title: 'Business rules', tabContent: (item) => this.businessRulesTab()},
 		        {id: '3', title: 'Dynamical attributes', tabContent: () => dynAttributesTabContent()},
 		    ],
 		}
@@ -193,13 +168,22 @@ class TypeDetails extends Component {
     	return tabsConfig
 	 }
 
-    lifecycleOf() {
+    lifecycleOf(v) {
     	const d = [];
-    	if(this.state.lifecycle){
+    	let { lifecycle } = this.state
+    	if(lifecycle) {
 	        var view = (
-	        	d.push(<ContentHolderPrimaryInfo displayHeader={false} contentHolderId={this.state.lifecycle.lifecycleIterationId} />)
+	        	d.push(<ContentHolderPrimaryInfo 
+	        			displayHeader={false} 
+	        			contentHolderFileName={this.state.lifecycle.lifecycle}
+	        			contentHolderId={this.state.lifecycle.lifecycleIterationId} />)
 	        )
     	}
+    	else {
+    		let itemName = this.state.item.attributes.displayName
+    		d.push(<div><strong>{itemName}</strong> has no associated lifecycle.</div>)
+    	}
+    	
         return d
     }
     
@@ -211,7 +195,7 @@ class TypeDetails extends Component {
         }
     }
     
-    async loadBusinessRule(item){
+    loadBusinessRule(item) {
     	if(item) {
 	    	const logicalName = item.attributes.logicalName
 	    	const logicalPath = item.attributes.logicalPath
@@ -224,34 +208,33 @@ class TypeDetails extends Component {
 	    	})
 	    	
 	    	let form = new FormData()
-	    	//form['businessType'] = logicalPath
 	    	form['businessClass']= classname
-	    	form['vetoable']= true
-	    	form['container']= getWorkingCurrentContainerId()
+	    	form['vetoable'] = true
+	    	form['container'] = getWorkingCurrentContainerId()
+	    	form['includeParentRules'] = 'false'
+	    	form['businessType'] = item.attributes.id
 	    	
-	    	const response = await businessRulesService.getApplicableRules(form)
+	    	businessRulesService.getApplicableRules(form)
 	    	.then(e => {
 	    		if(e){
 	    			this.setState({
-	    				businessRules:{
-		    				items: response.items,
-		    				metaData: response.metaData
-		    			}
+	    				businessRulesItems: e.data,
+	    				businessRulesMetaData: e.metaData
 	    			})
 	    		}
 	    	})
-	    	
-	    	var l = await response.businessRules
-	    	return l
     	}
     }
     
     businessRulesTab(){
-    	if(this.state.businessRulesItems){
+    	if(this.state.businessRulesItems  
+    			&& this.state.businessRulesItems.length > 0) {
+    		
 	    	return <TabPane tabId="2">
 				<Row>
 		            <Col lg="12" xl="12">
-		                <DataTable items={JSON.stringify(this.state.businessRulesItems)} 
+		                <DataTable 
+		                	items={JSON.stringify(this.state.businessRulesItems)} 
 		                	metaData={JSON.stringify(this.state.businessRulesMetaData)} 
 		                    tableConfig={tableConfig} paginate={false}/> 
 		            </Col>
@@ -259,55 +242,78 @@ class TypeDetails extends Component {
 		    </TabPane>
     	}
     	else {
+    		let containerName = commons.getWorkingContainerName()
     		return <TabPane tabId="2">
 	    		<Row>
 		            <Col md="12">
-		                <Card>
-		                    <CardBody>
+		                <Card className="no-radius no-border">
+		                    <CardBody className="">
 		                        <Col md="12">
 		                            <h1>No applicable rules</h1>
 		                            <hr/>
-		                            <p>No applicable rules found.</p>
+		                            <p><strong>{containerName}</strong> has no applicable rules for the selected type</p>
 		                        </Col>
 		                    </CardBody>
 		                </Card>
 		            </Col>
 		        </Row>
-	    </TabPane>
+		   </TabPane>
     	}
     }
     
-    async componentDidMount(){
-    	this.loadData()
+    /**
+     * Called the first time component is rendered 
+     */
+    componentDidMount() {
+    	if(this.props.itemId && this.props.itemId !== 'root_node') {
+    		this.loadData(this.props.itemId)
+    	}
+    }
+    /**
+     * Called when component is re rendered with new props (when selecting item)
+     */
+    componentWillReceiveProps(nextProps){
+    	if(this.props.itemId && nextProps.itemId !== 'root_node') {
+    		this.loadData(nextProps.itemId)
+    	}
     }
     
-    async componentWillReceiveProps(){
-    	this.loadData()
-    }
-    
-    async loadData(){
-    	let item = this.props.item
-    	if(item) {
-	    	var parsed = JSON.parse(item),
-	    	l = await loadBusinessRule(parsed)
-	    	var items =  await l.items
-	    	
-	    	var lifecycle = await getLifecycleOf(parsed)
-	    	var lifecycleAttributes = lifecycle.data ? lifecycle.data.attributes : {}
-	    	this.setState({
-				businessRulesItems: l.items,
-				businessRulesMetaData: l.metaData,
-				lifecycle: lifecycleAttributes
+    loadData(itemId) {
+    	typeService
+		.getById(itemId)
+		.then(json => {
+			let type = json.data
+			this.setState({
+				item: json.data,
+				lifecycle:null,
 			})
-    	}
+			
+			// load business rules
+			this.loadBusinessRule(type)
+			
+	    	// load lifecycles
+			typeService
+			.getLifecycleOf(type.attributes.id)
+			.then(json => {
+				// some type may not have lifecycle
+				if(json){
+					this.setState({
+						lifecycle: json.data ? json.data.attributes : {}
+					})
+				}
+			}).catch(error => {
+	    		this.setState({
+	    			lifecycle: null
+	    		})
+	        });
+		})
     }
     
     render() {
-        const item = this.props.item;
+        const { item } = this.state;
+        
         const navTabItems = [];
         const navTabContents = [];
-        const businessRulesTab = this.businessRulesTab()
-        
         const lifecycleAttributesList = {
 			items: [
 				{
@@ -321,9 +327,8 @@ class TypeDetails extends Component {
 			],
 		}
         
-        if(item){
-            const ritm = JSON.parse(item);
-
+        if(item) {
+        	const businessRulesTab = this.businessRulesTab()
             this.tabsConfig().tabItems.forEach(tabItem => {
                 const id = tabItem.id;
                 navTabItems.push( 
@@ -337,7 +342,7 @@ class TypeDetails extends Component {
 
             this.tabsConfig().tabItems.forEach(tabItem => {
                 const id = tabItem.id;
-                if(id === '2'){
+                if(id === '2' && this.state.businessRulesItems){
 	                navTabContents.push( <TabPane tabId={id.toString()}>
 	                    {businessRulesTab}
 	                </TabPane>)
@@ -346,50 +351,39 @@ class TypeDetails extends Component {
                 	navTabContents.push( 
                 		<TabPane tabId={id.toString()}>
                 			<div>
-                				{tabItem.tabContent(ritm)}
+                				{tabItem.tabContent(item)}
                 			</div>
                 			<div className='tab-pane'>
                 				<AttributesGroup attributesGroup={lifecycleAttributesList} 
-                	        		data={ritm} orientation="horizontal" displayHeader="true"/>
+                	        		data={item} orientation="horizontal" displayHeader="true"/>
                 			</div>
                 		</TabPane>
                 	)
                 }
                 else {
                 	navTabContents.push( <TabPane tabId={id.toString()}>
-                    	{tabItem.tabContent(ritm)}
+                    	{tabItem.tabContent(item)}
                     </TabPane>)
                 }
             });
 
-        return (
-         <React.Fragment>
-            <Row>
-                <Col xs="12" lg="12">
-                    <Card>
-                        <CardBody className="jsoagger-card-title">
-                            <h3 className="float-left, jsoa-table-title">{ritm.attributes.displayName} </h3>
-                        </CardBody>
-                    </Card>
-                </Col>
-            </Row>
-             <Row>   
-                 <Col xs="12" lg="12">
-                        <Nav pills>
-                            {navTabItems}
-                        </Nav>
-                        <hr/>
-                        <TabContent activeTab={this.state.activeTab}>
-                            {navTabContents}
-                        </TabContent>
-                    </Col>
-            </Row>
-        </React.Fragment>
-    );
-  }
-  else {
-       return (<React.Fragment>empty</React.Fragment>)}
-  }
+            return (
+		         <React.Fragment>
+		             <Row>   
+		             	<Col xs="12" md="12" lg="12" xl="12">
+		                        <Nav pills>{navTabItems}</Nav>
+		                        <hr/>
+		                        <TabContent activeTab={this.state.activeTab}>
+		                            {navTabContents}
+		                        </TabContent>
+		                 </Col>
+		            </Row>
+		        </React.Fragment>
+            );
+		  }
+		  else {
+		       return (<React.Fragment>loading...</React.Fragment>)}
+		  }
 }
 
 
@@ -409,35 +403,6 @@ const getLifecycleOf = async (item) => {
 	return lifecycle
 }
 
-const loadBusinessRule = async (item) => {
-	var businessRules = {}
-	if(item) {
-    	const logicalName = item.attributes.logicalName
-    	const logicalPath = item.attributes.logicalPath
-    	
-    	var classname
-    	rootTypeManaged.items.map(type => {
-    		if(type.rootType === logicalPath || logicalPath.startsWith(type.rootType + '/')){
-    			classname = type.businessClass
-    		}
-    	})
-    	
-    	let form = new FormData()
-    	//form['businessType'] = logicalPath
-    	form['businessClass']= classname
-    	form['vetoable']= true
-    	form['container']= getWorkingCurrentContainerId()
-    	
-    	const response = await businessRulesService.getApplicableRules(form)
-		if(response){
-			businessRules.items =  await response.data
-			businessRules.metaData = await response.metaData
-		}
-	}
-	
-	return businessRules
-}
-
 function getWorkingCurrentContainerId(){
 	var json = JSON.parse(localStorage.getItem('workingContainer'))
 	return json.id
@@ -446,14 +411,22 @@ function getWorkingCurrentContainerId(){
 
 const tableConfig = {
 		title: 'Applicable rules',
-		tableSize: 'md',
-		paginationSize: 'md',
+		tableSize: 'sm',
+		paginationSize: 'sm',
 		columnsConfig: [
-			{ name: 'Active', dataField: 'attributes.active', type: 'bool'},
-			{ name: 'Order', dataField: 'attributes.order'},
+			{ name:'', dataField: 'attributes.active', type: 'bool', displayComponent: (v) => activeOrNot(v)},
 	        { name: 'Rule',  dataField: 'attributes.rule'},
 	        { name: 'Event', dataField: 'attributes.event'},
-	        { name: 'Business type', dataField: 'attributes.businessType'},
 		],
 }
+
+function activeOrNot(v){
+	if(v){
+		return <td> <i className="fa">.</i></td>
+	}
+	else {
+		return <td> <i className="fa fa-ban fa-lg icon-red"></i></td> 
+	}
+}
+
 

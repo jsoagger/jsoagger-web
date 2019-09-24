@@ -70,8 +70,8 @@ class RCHistory extends Component {
 		
 		const tableConfig = {
 			title: 'All iterations',
-			tableSize: 'md',
-			paginationSize: 'md',
+			tableSize: 'sm',
+			paginationSize: 'sm',
 			columnsConfig: [
 				{ displayComponent: (v) => workingCopy(v), dataField: 'attributes.workInfo' },
 		        { name: 'Name', displayComponent: (v, i) => this.LinkToDetails(v,i), dataField: 'masterAttributes.name', defaultSortOrder: 'asc' },

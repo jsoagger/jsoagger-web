@@ -1,4 +1,4 @@
-import { _doPost,_doGet,_doPut, API_ROOT, buildURLQuery } from './utils/services.config';
+import { _doPost,_doGet,_doPut, API_ROOT, _doDelete, buildURLQuery } from './utils/services.config';
 
 export const accountService = {
     lock,
@@ -11,6 +11,11 @@ export const accountService = {
 	updatePersonProfile,
 	activateAccount,
 	registerPersonWithAccount,
+	containersMembership,
+	isUserInContainer,
+	addContainerMembership,
+	removeContainerMembership,
+	ownerType
 }
 /**
  * Register a new user with account
@@ -120,6 +125,59 @@ function updatePersonProfile(profileId, formData){
     var url = `${API_ROOT}` + uri
     return _doPut(url, formData);
 }
-
-
-
+/**
+ * Get all container memberships of given user account.
+ * 
+ * @param accountId
+ * @returns
+ */
+function containersMembership(accountId){
+	const uri = '/api/account/' + accountId + '/containersMembership/?containerId=:containerId';
+    var url = `${API_ROOT}` + uri
+	return _doGet(url);
+}
+/**
+ * Return true is the account is declared member in that container.
+ * 
+ * @returns
+ */
+function isUserInContainer(accountId, containerId){
+	const uri = '/api/account/' + accountId + '/containersMembership/' + containerId + '/isMember';
+    var url = `${API_ROOT}` + uri
+	return _doGet(url);
+}
+/**
+ * Add account as member of container.
+ * 
+ * @param accountId
+ * @param containerId
+ * @returns
+ */
+function addContainerMembership(accountId, containerId){
+	const uri = '/api/account/' + accountId + '/containersMembership/' + containerId;
+    var url = `${API_ROOT}` + uri
+	return _doPost(url);
+}
+/**
+ * Remove an account from container members
+ * 
+ * @param accountId
+ * @param containerId
+ * @returns
+ */
+function removeContainerMembership(accountId, containerId){
+	const uri = '/api/account/' + accountId + '/containersMembership/' + containerId;
+    var url = `${API_ROOT}` + uri
+	return _doDelete(url);
+}
+/**
+ * Returns the type of the owner.
+ * 
+ * @param accoundId
+ * @returns
+ */
+async function ownerType(accoundId){
+	const uri = "api/account/" + accoundId + "/ownerType/?containerId=:containerId"
+	const url = `${API_ROOT}/` + uri;
+    return _doGet(url);
+}

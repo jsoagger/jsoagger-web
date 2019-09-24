@@ -5,6 +5,7 @@ import ViewDefinition from '_components/ViewDefinition';
 import { containerService } from '_services/container.services.js';
 import { DataTable, ContextualMenu } from '../../../_components';
 import * as actions from '_actions/actions.js';
+import { commons } from '../../../_helpers/commons.js';
 
 const mapStateToProps = store => ({
 	userWorkingContainer: store.currentContainers,
@@ -15,7 +16,7 @@ const mapDispatchToProps = (disptach) => ({
 })
 
 /**
- * 
+ * Containers list/Switch container view
  */
 class Containers extends Component {
 	
@@ -32,7 +33,7 @@ class Containers extends Component {
 	}
 	
 	switchToLink(val){
-		return <td><Button  color="primary" className="float-right" onClick={e => this.switchTo(e, val)}>Switch to</Button></td>
+		return <td><Button  size="md" color="success" onClick={e => this.switchTo(e, val)}>Switch <i className="fa fa-chevron-right"></i></Button></td>
 	}
 
 	
@@ -98,7 +99,7 @@ class Containers extends Component {
 	emptyTableActions(){
 		return (
 			<React.Fragment>
-				<Button block color="primary" onClick={e => this.switchToParent(e)}>To parent</Button>
+				<Button size="md" color="primary" onClick={e => this.switchToParent(e)}>Parent</Button>
 			</React.Fragment>
 		)
 	}
@@ -129,9 +130,9 @@ class Containers extends Component {
 		const metaData = this.state.metaData;
 		
 		const tableConfig = {
-				tableSize: 'md',
-				paginationSize: 'md',
-				emptyMessageTitle: 'No child container',
+				tableSize: 'sm',
+				paginationSize: 'sm',
+				emptyMessageTitle: 'No containers',
                 emptyMessageDescription: 'This container has no children containers',
                 emptyActions: this.emptyTableActions,
 				columnsConfig: [
@@ -143,17 +144,31 @@ class Containers extends Component {
 		}
 		
 		if(items){
+			let isRootContainer = commons.getWorkingContainerId() == commons.getRootContainerId()
 	        return (
 	            <div>
+		            <Row>
+		            	<Col xs="0" sm="0" md="0" lg="1" xl="1"></Col>
+			            	<Col xs="12" sm="12" md="12" lg="10" xl="10">
+					            <div className="jsoagger-table-header">
+					            	<div><Button  size="xl" color="light" onClick={e => this.switchToParent(e)} disabled={isRootContainer}><i className="fa fa-chevron-left"></i> BACK</Button></div>
+			                    </div>
+			                </Col>
+		                <Col xs="0" sm="0" md="0" lg="1" xl="1"></Col>
+		            </Row> 
 	                <Row>
-	                    <Col lg="1"></Col>
-	                    <Col lg="10">
-	                        <DataTable items={JSON.stringify(items)}
-	                        	metaData={JSON.stringify(metaData)} 
-	                            tableConfig={tableConfig} 
-	                        paginate="false"/>
+	                	<Col xs="0" sm="0" md="0" lg="1" xl="1"></Col>
+	                	<Col xs="12" sm="12" md="12" lg="10" xl="10">
+	                		<Card className="no-radius">
+	                			<CardBody>
+			                        <DataTable items={JSON.stringify(items)}
+			                        	metaData={JSON.stringify(metaData)} 
+			                            tableConfig={tableConfig} 
+			                        paginate="false"/>
+		                        </CardBody>
+	                        </Card>
 	                    </Col>
-	                    <Col lg="1"></Col>
+	                    <Col xs="0" sm="0" md="0" lg="1" xl="1"></Col>
 	                </Row> 
 	            </div>
 	        ) 

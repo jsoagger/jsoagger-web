@@ -18,9 +18,22 @@ export const commons = {
 	indexOfItemInArray,
 	clone,
 	getAttributeViewer,
-	getWorkingContainerName
+	getWorkingContainerName,
+	getWorkingContainerId,
+	isAdministrator,
+	isAccountOwner,
+	getRootContainerId
+}
+
+function getRootContainerId(){
+	let container = localStorage.getItem('applicationContainer');
+	return JSON.parse(container).id;
 }
 function getCurrentContainer(){
+	let container = localStorage.getItem('workingContainer');
+	return JSON.parse(container).id;
+}
+function getWorkingContainerId(){
 	let container = localStorage.getItem('workingContainer');
 	return JSON.parse(container).id;
 }
@@ -76,6 +89,7 @@ function getInputType(attribute){
         case 'email': return 'email';
         case 'tel': return 'tel';
         case 'number': return 'number';
+        case 'select': return 'select';
         case 'password': return 'password';
         case 'date': return 'date';
         default: return 'text';
@@ -120,7 +134,7 @@ function indexOfItemInArray(item, array){
 	return index
 }
 /**
- * Returns current orking container name.
+ * Returns current working container name.
  * 
  * @returns
  */
@@ -128,4 +142,20 @@ function getWorkingContainerName(){
 	let workingContainer = JSON.parse(localStorage.getItem('workingContainer'))
 	return workingContainer.name
 }
+/**
+ * Return true if current user is admin
+ * @returns
+ */
+function isAdministrator(){
+	return localStorage.getItem('is_administrator') == 'true'
+}
+/**
+ * Return true if current user is owner of an account
+ * @returns
+ */
+function isAccountOwner(account){
+	let currentAccount = JSON.parse(localStorage.getItem('user_account'))
+	return currentAccount.nickName === account.nickName
+}
+
 

@@ -196,11 +196,9 @@ class BacthProcessingComponent extends Component {
                     <Row>
                     	<Col lg="1" md="1" xl="2"></Col>
                         <Col xs="10" lg="10" xl="10">
-                            <Card>
-                                <CardBody className="jsoagger-card-title">
-                                    <h3 className="float-left, jsoa-table-title">BATCH LOAD</h3>
-                                </CardBody>
-                            </Card>
+                        	<div className="jsoagger-table-header">
+                                <h3>BATCH LOAD</h3>
+                            </div>
                         </Col>
                         <Col lg="1" md="1" xl="2"></Col>
                     </Row>
@@ -235,16 +233,17 @@ class BacthLoadComponent extends Component {
             <div className="flex-row align-items-center">
                 <Container>
                     <Row>
-                    	<Col xs="12" lg="8">
-                            <Card>
-                                <CardBody className="jsoagger-card-title">
-                                    <h3 className="float-left, jsoa-table-title">BATCH LOAD</h3>
-                                </CardBody>
-                            </Card>
-                        </Col>
+	                    <Col xs="12" lg="2" xl="2"></Col>
+	                    <Col xs="12" lg="8" xl="8">
+	                		<div className="jsoagger-table-header">
+	                             <h3 className="float-left, jsoa-table-title">BATCH LOAD</h3>
+	                        </div>
+	                    </Col>
+	                    <Col xs="12" lg="2" xl="2"></Col>
                     </Row>
                     <Row>
-                        <Col xs="12" lg="8">
+                    	<Col xs="12" lg="2" xl="2"></Col>
+                        <Col xs="12" lg="8" xl="8">
                             <Card>
                                  <CardBody>
                                         <Row>
@@ -263,6 +262,7 @@ class BacthLoadComponent extends Component {
                                 </CardBody>
                             </Card>
                         </Col>
+                        <Col xs="12" lg="2" xl="2"></Col>
                     </Row>
                 </Container>
             </div>

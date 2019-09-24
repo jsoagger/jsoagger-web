@@ -79,8 +79,7 @@ class ResetPassword extends React.Component {
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Reset Password</ModalHeader>
           <ModalBody>
-			Reset password will reinit the user's password to the default one.
-			All user's connected accounts will be disconnected.
+			Reset password will reinit the user password to the default one.
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={(e) => this.doResetPassword(e)}>Reset password</Button>{' '}

@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { Col, Row, ListGroup, ListGroupItem ,Button, Badge} from 'reactstrap';
+import PropTypes from 'prop-types';
+import { Col, Row, ListGroup, ListGroupItem ,Button, Badge, Jumbotron, CardBody, Card, Container} from 'reactstrap';
 import ReactDOM from 'react-dom';
 import { containerService } from '_services/container.services.js';
 import { typeService } from '_services/type.services.js';
 import TypeDetails from './Type.js';
+import Tree, { TreeNode } from 'rc-tree';
+
 /**
  * Manage types
  */
@@ -16,33 +19,14 @@ class Types extends Component {
             metaData: '',
             firstRender: true,
             selectedItemLink: '',
-            dataRefreshed: false
-        };
+            dataRefreshed: false,
+        }
     }
 
-    loadChildItems(e, item, divId){
-        if(e) e.preventDefault();
-        typeService.getSubtypeOf(item.attributes.id, true)
-        .then(json => {
-        	let datas = this.generateItem(1, 100, JSON.stringify(json.data))
-    		ReactDOM.render(<ChildItems datas={datas}/>, document.getElementById('childItemsContainer__' + divId));
-        })
-    }
-    
-    loadParentItems(e, item, divId){
-    	if(e)  e.preventDefault();
-    	ReactDOM.render(<ChildItems />, document.getElementById('childItemsContainer__' + divId));
-	}
-    
-    selectItem(e, item){
-        e.preventDefault();
+    selectItem(itemId){
         const cursel = this.state.selectedItemLink;
-        var source = e.target || e.srcElement;
-        if(cursel) cursel.activate = false;
-        source.activate = true;
-
-        this.setState({selectedItemLink: source})
-        ReactDOM.render(<TypeDetails item={JSON.stringify(item)}/>, document.getElementById('typeInfomationContent'));
+        this.setState({selectedItemLink: itemId})
+        ReactDOM.render(<TypeDetails itemId={itemId}/>, document.getElementById('typeInfomationContent'));
     }
 
     componentDidMount(){
@@ -61,42 +45,6 @@ class Types extends Component {
         	console.error(error);
         })
 	}
-    
-    generateItem(level, index, data){
-    	const items = JSON.parse(data);
-    	let navs = []
-        items.forEach((item) => {
-        	const divid = 'load-child-items-indicator' + index++
-        	const plus = <Plus divId={divid} loadChildItems={e => this.loadChildItems(e,item, divid)}
-        		loadParentItems={e => this.loadParentItems(e,item, divid)}/>
-        	let childcontainerclassname = 'childItemsContainer__' + divid
-    		
-        	navs.push(
-        		<React.Fragment>
-        			<div className="jsoagger-treeitem white-background">
-        				<div className='div-float-left'>
-							<ListGroupItem  
-								tag="a" href="#" onClick={(e) => this.selectItem(e, item)} action>
-			            		{item.attributes.displayName}
-			            	</ListGroupItem>
-			            </div>
-			            <div  className='div-float-right'>
-	            			{plus}
-	            		</div>
-	            	</div>
-	            	<div id={childcontainerclassname} className=''></div>
-            	</React.Fragment>
-            )
-        })
-        
-        var elem = document.getElementById('typeInfomationContent');
-        if(elem.children.length === 0){
-            ReactDOM.render(<TypeDetails item={JSON.stringify(items[0])}/>, 
-                document.getElementById('typeInfomationContent'));
-        }
-        
-        return navs
-    }
 
     render() {
         const rawitems = this.state.items;
@@ -105,86 +53,177 @@ class Types extends Component {
 
         if(rawmetaData) {
             const items = JSON.parse(rawitems);
-            display = this.generateItem(0, 0, rawitems)
+            display = <JSoaggerReactTree 
+            	rawTreeItems={items} 
+            	selectItem={(itemId) => this.selectItem(itemId)}/>
         }
       
 	   return (
-	        <div className="flex-row align-items-center">
-                <Row>
-                    <Col md="3" xl="3">
-                        <div class="sidebar-nav-fixed affix jsoagger-left-pane jsoagger-scroll-y">
-                            <ListGroup>{display}</ListGroup>
-                        </div>
-                    </Col>
-                    <Col md="8" xl="6">
-                        <div id="typeInfomationContent"></div>
-                    </Col>
-                </Row>
-	        </div>
+	        <Row>
+    			<Col xs="12" sm="12" md="12" lg="4" xl="4">
+    				<div className="jsoagger-left-pane jsoagger-scroll-y jsoagger-bordered">
+                		{display}
+                	</div>
+    			</Col>
+    			<Col xs="12" sm="12" md="12" lg="8" xl="8">
+        			<div id="typeInfomationContent">
+	                        <Card className="no-radius">
+	                            <CardBody>
+	                                <Jumbotron className="white-background">
+	                                	<div className="text-center">
+	                                        <h3 className="display-4">No item selected</h3>
+	                                        <p className='lead'>Please select an item</p>
+	                                    </div>    
+	                                </Jumbotron>
+	                            </CardBody>
+	                        </Card>
+				        </div>
+    			</Col>
+	        </Row>
 	    )
 	  }
 }
-
 export default Types;
+/**
+ * Tree implementation for JSOAGGER type manager
+ */
+class JSoaggerReactTree extends React.Component {
+	  
+	  static propTypes = {
+	    keys: PropTypes.array,
+	  }
 
-
-class Plus extends Component {
-	
-	constructor(props){
-		super(props)
-		this.state = {
-			mode: 'plus'
+	  constructor(props) {
+	    super(props);
+	    const keys = props.keys;
+	    
+	    this.state = {
+	      defaultExpandedKeys: ['root_node'],
+	      defaultSelectedKeys: keys,
+	      defaultCheckedKeys: keys,
+	      treeData: [],
+	    };
+	  }
+	  
+	  onLoadData = treeNode => {
+	    return new Promise(resolve => {
+	        const treeData = [...this.state.treeData];
+	        const nodeKey = treeNode.props.eventKey
+	        
+	        this.getChildrenTreeData(treeData, nodeKey);
+	        resolve();
+	    });
+	  }
+	  
+	  getChildrenTreeData(treeData, curNodeKey) {
+		   if(curNodeKey !== 'root_node') {
+			  const loop = (data, newChildren) => {
+			    data.forEach(item => {
+			      if (curNodeKey === item.key) {
+			          item.children = newChildren;
+			      }
+			      if(item.children){
+		    		loop(item.children, newChildren)
+			      }
+			    })
+			  }
+			  
+			  typeService
+			  	.getSubtypeOf(curNodeKey, true)
+		        .then(json => {
+		        	let items = json.data
+		        	if(items) {
+		        		let children = []
+			        	items.map(i => {
+							children.push({key: i.attributes.id, title: 
+								i.attributes.displayName,
+								isLeaf: false, 
+								icon: (props) => businessIcon(props)})
+						})
+						loop(treeData, children);
+		        		this.setState({ treeData });
+		        	}
+		        })
+		   }
+	  }
+	  
+	  onSelect = info => {
+		  if(info.length > 0 && info[0] !== 'root_node'){
+			  if(this.props.selectItem){
+				  this.props.selectItem(info[0])
+			  }
+	  	  }
+	  };
+	  
+	  componentDidMount(){
+			containerService.getRootTypes(0, -1, true)
+	        .then(json => {
+	            return json;
+	        })
+	        .then(json => {
+	        	const treedata = generateRootTreeData(json.data)
+	            this.setState({
+	            	treeData: treedata
+	            })
+	        })
+	        .catch(error => {
+	        	console.error(error);
+	        })
+			
 		}
+	  
+	  render() {
+		  let items = []
+		  const { treeData } = this.state;
+		  
+	    const customLabel = (
+	      <span className="cus-label">
+	        <span>operations: </span>
+	        <span style={{ color: 'blue' }} onClick={this.onEdit}>Edit</span>&nbsp;
+	        <label onClick={(e) => e.stopPropagation()}>
+	          <input type="checkbox" /> checked
+	        </label>
+	        &nbsp;
+	        <span style={{ color: '#EB0000' }} onClick={this.onDel}>Delete</span>
+	      </span>
+	    );
+		  
+	    return (
+	      <div style={{ margin: '20px' }}>
+	        <Tree
+	          	ref={this.setTreeRef}
+	          	className="myCls" 
+	          	showLine
+	          	checkStrictly showIcon
+	          	defaultExpandedKeys={this.state.defaultExpandedKeys}
+	          	onExpand={this.onExpand}
+	          	defaultSelectedKeys={this.state.defaultSelectedKeys}
+	          	defaultCheckedKeys={this.state.defaultCheckedKeys}
+	          	onSelect={this.onSelect} 
+	        	onCheck={this.onCheck}
+	        	loadData={this.onLoadData}
+	        	treeData={treeData}>
+	        </Tree>
+	      </div>
+	    );
+	  }
 	}
-	
-	loadChildItems(e, item, divid){
-		if(e) e.preventDefault()
-		this.setState({
-			mode: 'minus'
+
+const generateRootTreeData = (items) => {
+	var treeData = []
+	var children = []
+	if(items){
+		items.map(i => {
+			children.push({key: i.attributes.id, title: i.attributes.displayName, isLeaf: false, icon: (props) => businessIcon(props)})
 		})
-		
-		this.props.loadChildItems(e, item, divid)
 	}
-	
-	loadParentItems(e, item, divid){
-		if(e) e.preventDefault()
-		this.setState({
-			mode: 'plus'
-		})
-		
-		this.props.loadParentItems(e, item, divid)
-	}
-	
-	render(){
-		let divid = this.props.divId
-		let item = this.props.item
-		
-		return (
-			<React.Fragment>
-				<Button color='white' onClick={(e) => this.loadChildItems(e, item, divid)} 
-					hidden={this.state.mode !== 'plus'} block>
-					<i className="fa fa-plus icons font-lg float-right"></i>
-		    	</Button>
-		    	<Button color='white' onClick={(e) => this.loadParentItems(e, item, divid)} 
-		    		hidden={this.state.mode === 'plus'} block>
-					<i className="fa fa-minus icons font-lg float-right"></i>
-		    	</Button>
-	    	</React.Fragment>
-		)
-	}
-} 
-
-class ChildItems extends Component {
-	
-	render(){
-		console.log(this.props.datas)
-		if(this.props.datas){
-			return (
-				<React.Fragment>{this.props.datas}</React.Fragment>
-			)
-		}
-		else {
-			return ('')
-		}
-	}
+	treeData.push({key: 'root_node', title: 'Managed Business types', children: children, icon: (props) => businessIcon(props)})
+	return treeData
 }
+
+const businessIcon = (props) => {
+	if(props.data.key === 'root_node') return <i className="fa fa-home fa-lg primary-icon-color"></i>
+	return <i className="fa fa-cubes fa-md primary-icon-color"></i>
+}
+
+

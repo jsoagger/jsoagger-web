@@ -16,6 +16,7 @@ import {peopleDetailsReducer} from '_reducers/peopleDetailsReducer.js';
 import {searchMembersReducer} from '_reducers/searchMembersReducer.js';
 import {searchBusinessRulesReducer} from '_reducers/searchBusinessRulesReducer.js';
 import {enumerationsReducer} from '_reducers/enumerationsReducer.js';
+import {headerSearchReducer} from '_reducers/headerSearchReducer.js';
 
 /*--------------------------------------------------------------------------------------------
 * REDUX STORE
@@ -33,6 +34,7 @@ const allReducers = combineReducers({
   searchMembers: searchMembersReducer,
   searchBusinessRules: searchBusinessRulesReducer,
   enumerations: enumerationsReducer,
+  headerSearchComp: headerSearchReducer,
 });
 
 export const store = createStore(allReducers);

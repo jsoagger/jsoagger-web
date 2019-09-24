@@ -179,11 +179,9 @@ class BacthProcessingComponent extends Component {
                 <Container>
                     <Row>
                         <Col xs="12" lg="12">
-                            <Card>
-                                <CardBody className="jsoagger-card-title">
-                                    <h3 className="float-left, jsoa-table-title">BATCH EXPORT</h3>
-                                </CardBody>
-                            </Card>
+                        	<div className="jsoagger-table-header">
+                                 <h3 className="float-left, jsoa-table-title">BATCH EXPORT</h3>
+                            </div>
                         </Col>
                     </Row>
                     <Row>
@@ -213,16 +211,17 @@ class BacthExportComponent extends Component {
             <div className="flex-row align-items-center">
                 <Container>
                     <Row>
-                    	<Col xs="12" lg="8">
-                            <Card>
-                                <CardBody className="jsoagger-card-title">
+                    <Col xs="12" lg="2" xl="2"></Col>
+                    <Col xs="12" lg="8" xl="8">
+                    		<div className="jsoagger-table-header">
                                     <h3 className="float-left, jsoa-table-title">BATCH EXPORT</h3>
-                                </CardBody>
-                            </Card>
+                            </div>
                         </Col>
+                        <Col xs="12" lg="2" xl="2"></Col>
                     </Row>
                     <Row>
-                    	<Col xs="12" lg="8">
+                    <Col xs="12" lg="2" xl="2"></Col>
+                    <Col xs="12" lg="8" xl="8">
                             <Card>
                                 <CardHeader>
                                     <strong>Parameters</strong>
@@ -239,7 +238,8 @@ class BacthExportComponent extends Component {
                                     </Form>
                                 </CardBody>
                             </Card>
-                        </Col>  
+                        </Col> 
+                        <Col xs="12" lg="2" xl="2"></Col>
                     </Row>
                 </Container>
             </div>

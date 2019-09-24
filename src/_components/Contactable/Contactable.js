@@ -36,7 +36,6 @@ class Contactable extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			totalElements: 0,
 			contacts:{},
 			contactMecId: '',
 		}
@@ -112,22 +111,24 @@ class Contactable extends Component {
     }
 	
 	async reloadContacts(){
-		const contacts = await contactableService.getAllContacts(this.props.businessId);
-		var total = contacts.totalElements;
-		if(contacts && contacts.data.length > 0){
-			this.setState({
-				metaData: contacts.metaData,
-				contacts: contacts.data[0],
-				contactMecId: contacts.data[0].attributes.id
+		contactableService
+			.getAllContacts(this.props.businessId)
+			.then(response => {
+				if(response && response.metaData && response.metaData.totalElements > 0){
+					this.setState({
+						metaData: response.metaData,
+						contacts: response.data[0],
+						contactMecId: response.data[0].attributes.id
+					})
+				}
+				else {
+					this.setState({
+						metaData: undefined,
+						contacts: undefined,
+						contactMecId: undefined
+					})
+				}
 			})
-		}
-		else {
-			this.setState({
-				metaData: {},
-				contacts: {},
-				contactMecId: ''
-			})
-		}
 	}
 
     render() {
@@ -201,19 +202,17 @@ class Contactable extends Component {
 		         {name: 'Country', dataField: 'country', type: 'string'},
     	    ],
     	}
+
+    	console.log(JSON.stringify(this.state))
     	
-    	if(this.state.contacts.attributes === undefined){
-    		return(
-    			<div>No content</div>
-    		)
-    	}
-    	else {
+    	if(this.state.contacts && this.state.contacts.attributes){
 	        return(
 	            <React.Fragment>
 	                <div>
 	                	<AttributeListGroup {...this.props} 
 	                		attributesListConfig={webAttributesList} 
-	                		data={this.state.contacts.attributes} 
+	                		data={this.state.contacts.attributes}
+	                		canEdit={this.props.canEdit}
 	                		firstRowLabel='false'
 	                		newObjectFormData={newWebFormData}/>
 	                	
@@ -221,36 +220,28 @@ class Contactable extends Component {
 	                		attributesListConfig={phonesAttributesList} 
 	                		data={this.state.contacts.attributes} 
 	                		firstRowLabel='true' 
+	                		canEdit={this.props.canEdit}
 	                		newObjectFormData={newPhoneFormData}/>
 	                    
 	                	<AttributeListGroup {...this.props} 
 	                		attributesListConfig={postalAddressAttributesList} 
 	                		data={this.state.contacts.attributes.postalAddress} 
-	                    	displayHeader='true' 
+	                    	displayHeader='true'
+	                    	canEdit={this.props.canEdit}
 	                    	standardFooterActions="true"
 	                    	newObjectFormData={newPostalAddressFormData}/>
 	                </div>
 	            </React.Fragment>
 	        )
     	}
+    	else {
+    		return(
+	            <div>No content</div>
+	        )
+    	}
 	}
 }
 
-const contacts = {
-    	phones: [
-    		{'title': 'Home phone','countryCode': '33','telecomNumber': '111 123 12'},
-    		{'title': 'Mobile phone','countryCode': '33','telecomNumber': '233 11 123 12'},
-    		{'title': 'Emmergency phone','countryCode': '34','telecomNumber': '333 11 123 12'},
-    	],
-    	postalAddress: {
-    		'id':'1', 'label': 'Delivery address','street': '24 rue de la paix, de la dame', 'code':'32110'
-    	},
-    	webContacts: [
-    		{'email': 'rasoso@gmail.com'},
-    		{'twitter': '#rasoso'},
-    		{'linkedIn': 'rmsoso'},
-    	]
-}    
  
 const newWebFormData = {
 		'label':'', 'value': ''

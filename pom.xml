@@ -8,7 +8,8 @@
 	<artifactId>jsoagger-webdev</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
-	<name>JSoagger UI</name>
+	<name>JSoagger ReactJS web UI</name>
+	<description>Web dev UI will be extracted in client customization project</description>
 	<packaging>jar</packaging>
 
 	<organization>

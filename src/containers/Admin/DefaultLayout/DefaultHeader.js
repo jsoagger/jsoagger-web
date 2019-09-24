@@ -36,7 +36,7 @@ class DefaultHeader extends Component {
 	 }
 	
 	 toSwitchContainer(){
-		 window.location.href = '#/admin/p/switchContainers';
+		 window.location.href = '#/admin/p';
 	 }
 	 
 	 switchToClientView(e) {
@@ -48,8 +48,6 @@ class DefaultHeader extends Component {
   
     render() {
     	//var element = React.createElement(AppSidebarToggler);
-    	
-        // eslint-disable-next-line
         const { children, ...attributes } = this.props;
         var container, userDetails = JSON.parse(localStorage.getItem('user_details'))
         const nickname = userDetails.nickName;
@@ -84,7 +82,7 @@ class DefaultHeader extends Component {
                     </NavItem>
                     
                     <NavItem className="px-3 jsoagger-container-location">
-	                    <NavLink to="/admin/p/switchContainers" className="nav-link">
+	                    <NavLink to="/admin/p" className="nav-link">
 	                        <i className="jsoagger-header-logo"></i>
 	                        <span><strong>{container}</strong></span>
 	                    </NavLink>

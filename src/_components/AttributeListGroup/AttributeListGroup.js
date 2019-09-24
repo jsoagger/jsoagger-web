@@ -42,10 +42,18 @@ class AttributeListGroup extends Component {
 	}
 
 	handleFormChange(event){
-		var formadata = JSON.parse(JSON.stringify(this.state.editingFormData))
-		formadata[event.target.name] = event.target.value
+		var { editingFormData } = this.state
+		editingFormData[event.target.name] = event.target.value
 		this.setState({
-			editingFormData: formadata,
+			editingFormData: editingFormData,
+		})
+	}
+	
+	setFormDataValue(key, value){
+		var { editingFormData } = this.state
+		editingFormData[key] = value
+		this.setState({
+			editingFormData: editingFormData,
 		})
 	}
 
@@ -106,37 +114,40 @@ class AttributeListGroup extends Component {
 			if(this.props.formMode === 'create_object'){
 				return (
 					<React.Fragment>
-						<Col lg="2"></Col>
-		                <Col lg="8">
+						<Col lg="4"></Col>
+		                <Col lg="4" className="float-right">
 			                <Button block color="primary" onClick={(e) => this.standardSaveForm(e, token, attributesListConfig)}> SAVE</Button>
 			            </Col>
-			            <Col lg="2"></Col>
+			            <Col lg="4"></Col>
 			        </React.Fragment>
 				)
 			} 
 			else {
 				return (
 					<React.Fragment>
-						<Col lg="4"></Col>
-		                <Col lg="4" className="float-right">
-			                <Button block color="primary" onClick={(e) => this.standardSaveForm(e, token, attributesListConfig)}> SAVE</Button>
-			            </Col>
-						<Col lg="4" className="float-right">
-		                	<Button block color="danger" onClick={(e) => this.standardResetForm(e, token)}> CANCEL</Button>
+						<Col lg="6"></Col>
+						<Col lg="6" className="text-center">
+							<Button className="ml-auto" size="md" color="light" onClick={(e) => this.standardSaveForm(e, token, attributesListConfig)}> SAVE</Button>
+		                	<Button className="ml-auto" size="md" color="light" onClick={(e) => this.standardResetForm(e, token)}> CANCEL</Button>
 		                </Col>
 			        </React.Fragment>
 				)
 			}
 		}
 		else if(!this.state.formsState[token] || this.state.formsState[token] === 'view') {
-			return (
-				<React.Fragment>
-						<Col lg="8"></Col>
-			            <Col lg="4" className="float-right">
-			                <Button block color="primary" onClick={(e) => this.standardEditForm(e, token)}><i className="fa fa-pencil"></i> EDIT</Button>
-			            </Col>
-		        </React.Fragment>
-			)
+			if(this.props.canEdit === true){
+				return (
+					<React.Fragment>
+							<Col lg="9"></Col>
+				            <Col lg="3" className="float-right">
+				                <Button size="md" color="light" onClick={(e) => this.standardEditForm(e, token)}><i className="fa fa-pencil"></i> EDIT</Button>
+				            </Col>
+			        </React.Fragment>
+				)
+			}
+			else {
+				return <hr/>
+			}
 		}
 	}
 
@@ -302,13 +313,17 @@ class AttributeListGroup extends Component {
     simpleArrayRow(attribute) {
         const rootdata = this.state.editingFormData;
         if(attribute.type === 'objectarray' || attribute.type === 'editableLabelObjectarray') {
-			
-			var arrayOfvalues = commons.getPropByString(rootdata, attribute.dataField);
+
+        	var arrayOfvalues = commons.getPropByString(rootdata, attribute.dataField);
 			// in this case, the header is not repeated for each line bloc
 			// we just display each row with action, unique header and footer actions
 			if(attribute.type === 'editableLabelObjectarray'){
 				var formId = 'formid_array_group_1'
-				return <AttributeArrayGroup {...this.props} items={arrayOfvalues} attribute={attribute} wrapInform={formId}/>
+				return <AttributeArrayGroup {...this.props} 
+					canEdit={this.props.canEdit} 
+					items={arrayOfvalues} 
+					attribute={attribute} 
+					wrapInform={formId}/>
 			}
 			else {
 				var rows = <AttributeArrayObjectGroup {...this.props} items={arrayOfvalues} attribute={attribute}/>
@@ -359,6 +374,28 @@ class AttributeListGroup extends Component {
 			const data = this.state.editingFormData;
         	var val = data ? commons.getPropByString(data, attribute.dataField) : '';
 			var editor = commons.getInputType(attribute);
+			if("select" === editor && attribute.enumProvider){
+				var options = [], enums = attribute.enumProvider()
+				options.push(<option value=''>Select...</option>)
+				enums.map(e => {
+					var opt = <option value={e.key}>{e.value}</option>
+					options.push(opt)
+				})
+				
+				return (
+					<React.Fragment>		
+						<tr>
+							<td width="45%"><Label className="control-label-view">{attribute.name}</Label></td>
+							<td>
+								<select value={val} onChange={this.handleFormChange} name={attribute.dataField}>
+									{options}
+						        </select>
+						     </td>
+			            </tr>
+			        </React.Fragment>
+				)
+			}
+			
 			return (
 				<React.Fragment>
 					<tr> 

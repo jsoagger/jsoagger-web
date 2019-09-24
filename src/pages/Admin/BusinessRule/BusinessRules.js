@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Button, Container, Col, Row, Label, Input, Card,CardTitle, CardHeader, CardText, FormGroup, CardBody } from 'reactstrap';
+import { Button, Jumbotron, Container, Col, Row, Label, Input, Card,CardTitle, CardHeader, CardText, FormGroup, CardBody } from 'reactstrap';
 import { DataTable } from '../../../_components';
 import BusinessClassAndTypeSelect from '_components/BusinessClassAndTypeSelect';
 import BusinessEventSelectInput from '_components/BusinessClassAndTypeSelect/BusinessEventSelectInput.js';
 import { businessRulesService } from '_services/business.rule.services.js';
 import * as actions from '_actions/actions.js';
+import {commons} from '_helpers/commons.js';
 
 const mapStateToProps = store => ({
 	businessType: store.searchBusinessRules.businessType,
@@ -59,6 +60,7 @@ class BusinessRules extends Component {
 		form['container']= getWorkingCurrentContainerId()
 		form['phase']= this.state.phase
 		form['vetoable']= this.state.vetoable
+		form['includeParentRules'] = 'false'
 		
 		if(this.state.businessClass === undefined ||
 				(this.state.businessClass === '' && this.state.businessType === '')){
@@ -123,20 +125,20 @@ class BusinessRules extends Component {
             <React.Fragment>
                 <FormGroup>
                     <Row>
-                        <Col md="3">
-                            <Label htmlFor="select">Business class</Label>
-                        </Col>
-                        <Col xs="6" md="9">
+	                    <Col xs="12" sm="12" md="2" lg="12" xl="12">
+		                    <Label htmlFor="select"><strong>Business class</strong></Label>
+		                </Col>
+                        <Col  xs="12" sm="12" md="2" lg="12" xl="12">
                             {businessClass}
                         </Col>
                     </Row>
                 </FormGroup>
                 <FormGroup>
                     <Row>
-                        <Col md="3">
-                            <Label htmlFor="select">Business type</Label>
+                        <Col xs="12" sm="12" md="2" lg="12" xl="12">
+                            <Label htmlFor="select"><strong>Business type</strong></Label>
                         </Col>
-                        <Col xs="6" md="9">
+                        <Col  xs="12" sm="12" md="2" lg="12" xl="12">
                             {businessTypes}
                         </Col>
                     </Row>
@@ -164,47 +166,29 @@ class BusinessRules extends Component {
 		var datatable
 		if(items && items.length > 0) {
 			datatable = (
-				<Row>
-                    <Col lg="1"></Col>
-                    <Col lg="10" xl="10">
-                        <DataTable items={JSON.stringify(items)} 
-                        	metaData={JSON.stringify(metaData)} 
-                            tableConfig={tableConfig} paginate={false}/> 
-                    </Col>
-                    <Col lg="1"></Col>
-                </Row> 
+				<Card className="no-radius">
+						<CardBody className="no-border">
+			                <DataTable items={JSON.stringify(items)} 
+			                	metaData={JSON.stringify(metaData)} 
+			                    tableConfig={tableConfig} paginate={false}/> 
+		                </CardBody>
+                </Card>
 			)	
 		}
 		else {
-			if(this.state.businessClass !== '' && this.state.processing) {
-				
-				datatable = (
-					<div>
-						<Row>
-							<Col lg="1"></Col>
-	                        <Col xs="12" lg="10">
-	                            <Card>
-	                                <CardBody className="jsoagger-card-title">
-	                                    <h3 className="float-left, jsoa-table-title">Applicable rules</h3>
-	                                </CardBody>
-	                            </Card>
-	                        </Col>
-	                        <Col lg="1"></Col>
-	                    </Row>
-	                    <Row>
-	                    	<Col lg="1"></Col>
-	                        <Col xs="12" lg="10">
-	                            <Card>
-	                                <CardBody className="jsoagger-card-title">
-	                                    <h3 className="">No rules</h3>
-	                                </CardBody>
-	                            </Card>
-	                        </Col>
-	                        <Col lg="1"></Col>
-	                    </Row>
-	                </div>
-				)
-			}
+			let currentContainerName = commons.getWorkingContainerName()
+			datatable = (
+                <Card className="no-radius">
+                    <CardBody className="no-border">
+                        <Jumbotron className="white-background">
+                        	<div className="text-center">
+                                <h3>No applicable rules</h3>
+                                <p className='lead'><strong>{currentContainerName}</strong> has rules applicable to selected criterias.</p>
+                            </div>    
+                        </Jumbotron>
+                    </CardBody>
+                </Card>
+			)
 		}
 		
 		var vetoable
@@ -212,7 +196,7 @@ class BusinessRules extends Component {
 			vetoable = (
 				<Row>
 		            <Col xs="4" sm="4" md="4" lg="4" xl="4">
-                        <Label htmlFor="vetoable">Vetoable</Label>
+                        <Label htmlFor="vetoable"><strong>Vetoable</strong></Label>
                     </Col>
                     <Col xs="2">
                         <Input checked={this.state.vetoable} type="checkbox" name="vetoable" id="vetoable" onChange={this.handleChange}/>                    	
@@ -227,78 +211,65 @@ class BusinessRules extends Component {
 		}
 		
       	return (
-	        <div className="flex-row align-items-center">
-	            <Container>
-	                <Row className="justify-content-center">
-	                	<Col md="1"></Col>
-	                    <Col md="10">
-	                        <Card>
-	                            <CardHeader>
-	                                <CardTitle><h3 className="mr-1">Business Rules</h3></CardTitle>
-	                            </CardHeader>
-	                            <CardBody>
-				                        <Row className="justify-content-center">
-				    	            		<Col xl="12">
-				    	            			<div className='jsoagger-form-error'>
-				    	            				<h3>{errors}</h3>
-				    	            			</div>
-				    	            		</Col>
-				    	            	</Row>
-	                                    <Row>
-	                                        <Col md="12">
-	                                            <Card>
-	                                                <CardBody>
-	                                                	<Row>
-		                                                    <Col xs="12" sm="12" md="12" lg="12" xl="12">{comp}</Col>
-	                                                	</Row>
-	                                                    <FormGroup>
-		                                                    <Row>
-		                                                        <Col xs="12" sm="12" md="12" lg="12" xl="12">
-		                                                            <Label htmlFor="select">Business event</Label>
-		                                                        </Col>
-		                                                        <Col xs="12" sm="12" md="8" lg="12" xl="12">
-		                                                            <BusinessEventSelectInput businessEventChangeFunction={this.businessEventChange}
-		                                                            	defaultValue={this.state.eventKey}/>
-		                                                        </Col>
-		                                                    </Row>
-	                                                    </FormGroup>
-	                                                    <FormGroup>
-		                                	                <Row>
-		                                                        <Col xs="12" sm="12" md="12" lg="12" xl="12">
-		                                	                        <Label htmlFor="phase">Transaction phase</Label>
-		                                	                    </Col>
-		                                                        <Col xs="12" sm="12" md="12" lg="12" xl="12">
-		                                		                    <Input value={this.state.phase} type="select" name="phase" id="phase" onChange={this.handleChange}>
-		                                			                    <option value="0">Before commit</option>
-		                                			                    <option value="1">After success commit</option>
-		                                			                    <option value="2">After rollback (commit error)</option>
-		                                			                </Input>
-		                                			            </Col>
-		                                	                </Row>
-		                                	            </FormGroup>
-		                                	            <FormGroup>
-		                                	            	<Row>
-		                                	            	<Col xs="12" sm="12" md="12" lg="12" xl="12">{vetoable}</Col>
-		                                	            	</Row>
-		                                	            </FormGroup>
-	                                                </CardBody>
-	                                            </Card>
-	                                        </Col>
-	                                    </Row>
-	                                    <Row>
-	                                        <Col col="6"></Col>
-	                                        <Col col="4" sm="8" md="4" className="float-right">
-	                                            <Button block color="primary" onClick={e => this.applicableRules(e)}>Applicable Business rules</Button>
-	                                        </Col>
-	                                    </Row>
-	                            </CardBody>
-	                        </Card>
-	                    </Col>
-	                    <Col md="1"></Col>
-	                </Row>
-	                {datatable}
-	            </Container>
-	        </div>
+  			<Row>
+  				<Col xs="12" sm="12" md="12" lg="4" xl="4">
+		      		<Card className="no-radius">
+		      			<CardBody>
+		    				<Row >
+			            		<Col xs="12" sm="12" md="2" lg="12" xl="12">
+			            			<div className='jsoagger-form-error'>
+			            				<h3>{errors}</h3>
+			            			</div>
+			            		</Col>
+			            	</Row>
+			            	<FormGroup>
+		                    	<Row>
+		                            <Col xs="12" sm="12" md="2" lg="12" xl="12">{comp}</Col>
+		                    	</Row>
+	                    	</FormGroup>
+	                    	<FormGroup>
+		                        <Row>
+		                            <Col xs="12" sm="12" md="2" lg="12" xl="12">
+		                                <Label htmlFor="select"><strong>Business event</strong></Label>
+		                            </Col>
+		                            <Col xs="12" sm="12" md="2" lg="12" xl="12">
+		                                <BusinessEventSelectInput businessEventChangeFunction={this.businessEventChange}
+		                                	defaultValue={this.state.eventKey}/>
+		                            </Col>
+		                        </Row>
+	                        </FormGroup>
+	                        <FormGroup>
+		    	                <Row>
+		                            <Col xs="12" sm="12" md="12" lg="12" xl="12">
+		    	                        <Label htmlFor="phase"><strong>Transaction phase</strong></Label>
+		    	                    </Col>
+		                            <Col xs="12" sm="12" md="12" lg="12" xl="12">
+		    		                    <Input value={this.state.phase} type="select" name="phase" id="phase" onChange={this.handleChange}>
+		    			                    <option value="0">Before commit</option>
+		    			                    <option value="1">After success commit</option>
+		    			                    <option value="2">After rollback (commit error)</option>
+		    			                </Input>
+		    			            </Col>
+		    	                </Row>
+	    	                </FormGroup>
+	    	                <FormGroup>
+		    	            	<Row>
+		    	            		<Col xs="12" sm="12" md="12" lg="12" xl="12">{vetoable}</Col>
+		    	            	</Row>
+	    	            	</FormGroup>
+	    	            	<hr />
+		                    <Row>
+		                        <Col xs="12" sm="12" md="12" lg="12" xl="12" className="float-right">
+		                            <Button block color="primary" onClick={e => this.applicableRules(e)}>Applicable Business rules</Button>
+		                        </Col>
+		                    </Row>
+				        </CardBody>
+			        </Card>
+			  </Col>
+			  <Col xs="12" sm="12" md="12" lg="8" xl="8">
+					{datatable}
+			  </Col>
+        </Row>
     )
   }
 }
@@ -308,11 +279,11 @@ const tableConfig = {
 		tableSize: 'md',
 		paginationSize: 'md',
 		columnsConfig: [
-			{ name: 'Active', dataField: 'attributes.active', type: 'bool'},
-			{ name: 'Order', dataField: 'attributes.order'},
+			{ name: 'Act.', dataField: 'attributes.active', type: 'bool', displayComponent: (v) => activeOrNot(v)},
+			{ name: 'Ord.', dataField: 'attributes.order'},
 	        { name: 'Rule', displayComponent: (v, i) => LinkTo(v,i), dataField: 'attributes.rule', defaultSortOrder: 'asc' },
 	        { name: 'Event', dataField: 'attributes.event'},
-	        { name: 'Business type', dataField: 'attributes.businessType'},
+	        { name: 'On type', dataField: 'attributes.businessType'},
 		],
 }
 /**
@@ -328,5 +299,14 @@ export default connect(mapStateToProps, mapDispatchToProps) (BusinessRules);
 function getWorkingCurrentContainerId(){
 	var json = JSON.parse(localStorage.getItem('workingContainer'))
 	return json.id
+}
+
+function activeOrNot(v){
+	if(v){
+		return <td> <i className="fa">.</i></td>
+	}
+	else {
+		return <td> <i className="fa fa-ban fa-lg icon-red"></i></td> 
+	}
 }
 

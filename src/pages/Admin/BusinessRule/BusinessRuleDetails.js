@@ -94,6 +94,9 @@ class BusinessRuleDetails extends Component {
 		const d = businessRulesService
 		.getById(businessRuleId)
 		.then(json => {
+			let location = json.data.attributes.rule
+			document.getElementsByClassName('active breadcrumb-item')[0].innerHTML = location
+			
 			this.setState({
 				item: json, 
 				id: businessRuleId
@@ -128,11 +131,9 @@ class BusinessRuleDetails extends Component {
 						<Col xs="12" sm="12" md="10" lg="10" xl="8">
 							<Row>
 								<Col xs="12" md="12" lg="12" xl="12">
-		                            <Card>
-		                            	<CardBody>
-		                            		<h3 className="float-left, jsoa-table-title">{d.attributes.rule} </h3>
-		                                </CardBody>
-		                            </Card>
+									<div className="jsoagger-table-header">
+		                            	<h3 className="float-left, jsoa-table-title">{d.attributes.rule} </h3>
+		                            </div>
 		                        </Col>
 							</Row>
 							<Row>

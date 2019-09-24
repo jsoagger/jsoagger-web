@@ -4,9 +4,21 @@ import { _doGet, buildURLQuery, API_ROOT } from './utils/services.config';
  */
 export const typeService = {
     getByPath,
+    getById,
     getSubtypeOf,
-    getLifecycleOf
+    getLifecycleOf,
+    getSubtypeOfRecursive
 };
+/**
+ * Get a type by its id
+ * 
+ * @param {*} id 
+ */
+async function getById(id){
+	const uri = "api/type/" + id + "/?containerId=:containerId";
+	const url = `${API_ROOT}/` + uri;
+    return _doGet(url);
+}
 /**
  * Get a type by its path
  * 
@@ -27,6 +39,18 @@ async function getSubtypeOf(typeId, includeParentItems) {
 	var p = buildURLQuery({fetchInParent:includeParentItems});
 	const uri = "api/type/" + typeId + "/subtypes/?containerId=:containerId&".concat(p);
 	const url = `${API_ROOT}/` + uri;
+    return _doGet(url);
+}
+/**
+ * Get subtype of a base type
+ * 
+ * @param {*} typePath The path of the parent type 
+ */
+async function getSubtypeOfRecursive(typeId, includeParentItems) {
+	var p = buildURLQuery({fetchInParent:includeParentItems, recursive: 'true'});
+	const uri = "api/type/" + typeId + "/subtypes/?containerId=:containerId&".concat(p);
+	const url = `${API_ROOT}/` + uri;
+	console.log('>>>>>>>>>> 1 : ' + url)
     return _doGet(url);
 }
 /**

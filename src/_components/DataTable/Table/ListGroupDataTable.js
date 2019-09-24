@@ -74,17 +74,15 @@ class ListGroupDataTable extends Component {
 		if(metaData.totalElements > 0){
 			const rows = this.props.rows;
 			const pagination = this.populatePagination();
-            const title = this.props.tableConfig.title.toUpperCase();
+            const title = this.props.tableConfig.title;
 			return (
 			    <div className="flex-row align-items-center">
 			        <Container>
                         <Row>
                             <Col xs="12" lg="12">
-                                <Card>
-                                    <CardBody className="jsoagger-card-title">
-                                        <h3 className="float-left, jsoa-table-title">{title}</h3>
-                                    </CardBody>
-                                </Card>
+                            	<div className="jsoagger-table-header">
+                                    <h3 className="float-left, jsoa-table-title">{title}</h3>
+                                </div>
                             </Col>
                         </Row>
 			            <Row>

@@ -88,27 +88,25 @@ class DataTable extends Component {
 			const rows = this.populateRows();
 			const pagination = this.populatePagination();
             const title = this.props.tableTitle ? this.props.tableTitle : 
-            	this.props.tableConfig.title? this.props.tableConfig.title.toUpperCase() : '';
+            	this.props.tableConfig.title? this.props.tableConfig.title : '';
             	
             const titleDisplay = title ? (
             	<Row>
                     <Col xs="12" lg="12">
-                        <Card>
-                            <CardBody className="jsoagger-card-title">
-                                <h3 className="float-left, jsoa-table-title">{title}</h3>
-                            </CardBody>
-                        </Card>
+                        <div className="jsoagger-table-header">
+                            <h3 className="float-left, jsoa-table-title">{title}</h3>
+                        </div>
                     </Col>
                 </Row>
             ): ''
             
 			return (
-				<div>
+				<React.Fragment>
                         {titleDisplay}
 			            <Row>
                             <Col xs="12" lg="12">
-                                <Card>
-                                    <CardBody className="jsoagger-paddingless-cardbody">
+                                <Card className="no-radius no-border">
+                                    <CardBody className="no-padding">
                                         <Table hover responsive 
                                         	size={this.props.tableConfig.tableSize} 
                                         	className={this.props.tableClassName}>
@@ -121,7 +119,7 @@ class DataTable extends Component {
                                 </Card>
                             </Col>
                         </Row>
-			   </div>
+                </React.Fragment>
 		  );
 		}
 		else {
@@ -142,12 +140,12 @@ const emptyTableContent = (title, description, subDescription, emptyActions) => 
 	return (
         <div className="flex-row align-items-center">
                 <Row className="justify-content-center">
-                    <Col xs="12" sm="12" md="12" lg="12" xl="10">
-                        <Card className="card-accent-warning">
+                    <Col xs="12" sm="12" md="12" lg="12" xl="12">
+                        <Card className="no-radius no-border">
                             <CardBody>
-                                <Jumbotron className="white-background" fluid>
-                                    <Container fluid className="white-background">
-                                        <p className='display-4'>{title}</p>
+                                <Jumbotron className="white-background">
+                                    <Container>
+                                        <h3 className="display-3">{title}</h3>
                                         <p className='lead'>{description}</p>
                                         <hr className='my-2'/>
                                         <p>{subDescription}</p>

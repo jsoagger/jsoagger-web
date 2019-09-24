@@ -15,10 +15,11 @@ import { connect } from 'react-redux';
 import { accountService } from '_services/account.services.js';
 import * as actions from '_actions/actions.js';
 import { toast } from 'react-toastify';
-import logo from '../../../assets/img/brand/logo.png'
+import logo from '../../../assets/img/brand/logo.svg'
 
 /**
- * ClientLoginPage component
+ * Login page will redirect the user in this page
+ * if the user account is not activated.
  */
 class ActivateAccount extends React.Component {
 
@@ -105,41 +106,39 @@ class ActivateAccount extends React.Component {
      */
     render () {
         return (
-                    <Row className="justify-content-center">
-                        <Col md="8">
-                            <CardGroup>
-                                <Card className="p-4">
-                                	<CardBody>
-	                                	<Form>
-	                                	  <img src={logo} className="img-avatar" alt="JSOAGGER logo" width="300"/>
-		              	                  <h3>Please change password to activate your account</h3>
-		              	                  <hr/>
-		              	                  <div>{this.state.formError}</div>
-		              	                  <InputGroup className="mb-3">
-		              	                    <InputGroupAddon addonType="prepend">
-		              	                      <InputGroupText>
-		              	                        <i className="icon-lock"></i>
-		              	                      </InputGroupText>
-		              	                    </InputGroupAddon>
-		              	                    <Input type="password" name="password" placeholder="Your password" autoComplete="new-password" onChange={(e) => this.handleFormChange(e)}/>
-		              	                  </InputGroup>
-		              	                  <InputGroup className="mb-4">
-		              	                    <InputGroupAddon addonType="prepend">
-		              	                      <InputGroupText>
-		              	                        <i className="icon-lock"></i>
-		              	                      </InputGroupText>
-		              	                    </InputGroupAddon>
-		              	                    <Input type="password" name="passwordValidation" placeholder="Repeat password" autoComplete="new-password" onChange={(e) => this.handleFormChange(e)}/>
-		              	                  </InputGroup>
-		              	                </Form>
-                                	</CardBody>
-                                	<CardFooter>
-                                		<Button color="danger" onClick={(e) => this.doActivateAccount(e)} disabled={this.state.formError === ''}>Update password</Button>{' '}
-                                	</CardFooter>
-                                </Card>
-                            </CardGroup>
-                        </Col>
-                    </Row>
+            <Row className="justify-content-center">
+                <Col md="8">
+                    <Card className="p-4">
+                    	<CardBody>
+                        	<Form>
+                        		<img src={logo} className="img-avatar-xl" alt="JSOAGGER logo"/>
+          	                  <h3>Change your password to activate your account</h3>
+          	                  <hr/>
+          	                  <div>{this.state.formError}</div>
+          	                  <InputGroup className="mb-3">
+          	                    <InputGroupAddon addonType="prepend">
+          	                      <InputGroupText>
+          	                        <i className="icon-lock"></i>
+          	                      </InputGroupText>
+          	                    </InputGroupAddon>
+          	                    <Input type="password" name="password" placeholder="Your password" autoComplete="new-password" onChange={(e) => this.handleFormChange(e)}/>
+          	                  </InputGroup>
+          	                  <InputGroup className="mb-4">
+          	                    <InputGroupAddon addonType="prepend">
+          	                      <InputGroupText>
+          	                        <i className="icon-lock"></i>
+          	                      </InputGroupText>
+          	                    </InputGroupAddon>
+          	                    <Input type="password" name="passwordValidation" placeholder="Repeat password" autoComplete="new-password" onChange={(e) => this.handleFormChange(e)}/>
+          	                  </InputGroup>
+          	                </Form>
+                    	</CardBody>
+                    	<CardFooter>
+                    		<Button color="danger" onClick={(e) => this.doActivateAccount(e)} disabled={this.state.formError === ''}>Update password</Button>{' '}
+                    	</CardFooter>
+                    </Card>
+                </Col>
+            </Row>
         );
     }
 }

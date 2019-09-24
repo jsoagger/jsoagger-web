@@ -92,8 +92,7 @@ class LockUser extends React.Component {
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Lock user</ModalHeader>
           <ModalBody>
-			Locked user can not no more connect into the system until it is unlocked by administrator.
-			Account can also be locked if the user has entered bad password 3 times.
+			Locked user can not connect into the system until account is unlocked by administrator.
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={(e) => this.doLockUser(e)}>Lock user</Button>
