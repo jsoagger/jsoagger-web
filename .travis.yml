@@ -35,5 +35,12 @@ deploy:
     - docker push jsoagger/soagg-webdev:$project_version
   on:
     branch: master
-             
+
+# 1. Trigger a version deploy when a commit on tag
+    - provider: script
+      script: bash .travis/release.sh 
+      skip_cleanup: true
+      on:
+        tags: true
+        all_branches: true
         
