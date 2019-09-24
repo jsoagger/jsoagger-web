@@ -2,7 +2,7 @@
 
 set -e
 
-echo "Ensuring that pom <version> matches $TRAVIS_TAG"
+#echo "Ensuring that pom <version> matches $TRAVIS_TAG"
 #mvn org.codehaus.mojo:versions-maven-plugin:2.5 -DnewVersion=$TRAVIS_TAG
 
 
