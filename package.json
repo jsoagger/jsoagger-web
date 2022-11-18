@@ -53,7 +53,7 @@
     "jsdom": "^15.1.1",
     "mocha": "^6.2.0",
     "react-addons-test-utils": "^15.6.2",
-    "react-scripts": "^3.0.1"
+    "react-scripts": "^5.0.1"
   },
   "scripts": {
     "start": "NODE_PATH=src/:src/_components:src/pages:src/_services:src/assets:src/utils:src/store:src/_actions:src/_reducers react-scripts start",
